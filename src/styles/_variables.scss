@@ -1,0 +1,43 @@
+// Color System
+$primary-brown: #3E2723;
+$roasted-malt: #1A0E0A;
+$foam-cream: #F5E6D3;
+$dark-forest: #1B3A1B;
+$amber-gold: #FFA000;
+$beer-foam: #FFFBF0;
+
+// Typography
+$font-display: 'Playfair Display', serif;
+$font-body: 'Inter', sans-serif;
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 1.5rem;
+$spacing-lg: 2rem;
+$spacing-xl: 3rem;
+$spacing-xxl: 4rem;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+$border-radius-xl: 24px;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgba(26, 14, 10, 0.1);
+$shadow-md: 0 4px 8px rgba(26, 14, 10, 0.15);
+$shadow-lg: 0 8px 16px rgba(26, 14, 10, 0.2);
+$shadow-xl: 0 16px 32px rgba(26, 14, 10, 0.25);
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// Animation
+$transition-fast: 0.2s ease;
+$transition-medium: 0.3s ease;
+$transition-slow: 0.5s ease;
+$transition-liquid: 0.8s cubic-bezier(0.4, 0, 0.2, 1);

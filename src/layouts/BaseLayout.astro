@@ -1,0 +1,227 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'Black Lodge Brews', description = 'Premium craft brewery with mysterious charm' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <div class="liquid-page-transition" id="pageTransition"></div>
+  
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-content">
+        <a href="/" class="logo">
+          <span class="logo-text">Black Lodge Brews</span>
+        </a>
+        <div class="nav-links">
+          <a href="#taps" class="nav-link">Tap List</a>
+          <a href="#story" class="nav-link">Our Story</a>
+          <a href="#taproom" class="nav-link">Taproom</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Black Lodge Brews</h3>
+          <p>Crafting mysterious and exceptional beers since 2023</p>
+        </div>
+        <div class="footer-section">
+          <h4>Hours</h4>
+          <p>Mon-Thu: 4pm-10pm</p>
+          <p>Fri-Sat: 2pm-12am</p>
+          <p>Sun: 2pm-9pm</p>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <p>123 Brewery Lane</p>
+          <p>Portland, OR 97210</p>
+          <p>(503) 555-BREW</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Black Lodge Brews. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Liquid page transition effect
+    function triggerPageTransition() {
+      const transition = document.getElementById('pageTransition');
+      if (transition) {
+        transition.classList.add('active');
+        setTimeout(() => {
+          transition.classList.remove('active');
+        }, 800);
+      }
+    }
+
+    // Scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in-up');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>
+
+<style lang="scss">
+  @import '../styles/global.scss';
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(26, 14, 10, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    transition: all $transition-medium;
+    
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-sm 0;
+    }
+    
+    .logo {
+      font-family: $font-display;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $amber-gold;
+      text-decoration: none;
+      
+      &:hover {
+        color: #FFD54F;
+      }
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: $spacing-lg;
+      
+      .nav-link {
+        color: $foam-cream;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color $transition-fast;
+        position: relative;
+        
+        &:hover {
+          color: $amber-gold;
+        }
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: $amber-gold;
+          transition: width $transition-fast;
+        }
+        
+        &:hover::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  main {
+    padding-top: 80px;
+  }
+
+  .footer {
+    background: $roasted-malt;
+    padding: $spacing-xxl 0 $spacing-md;
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: $spacing-lg;
+      margin-bottom: $spacing-lg;
+    }
+    
+    .footer-section {
+      h3, h4 {
+        color: $amber-gold;
+        margin-bottom: $spacing-sm;
+      }
+      
+      p {
+        color: rgba(245, 230, 211, 0.8);
+        margin-bottom: $spacing-xs;
+      }
+    }
+    
+    .footer-bottom {
+      padding-top: $spacing-md;
+      border-top: 1px solid rgba(245, 230, 211, 0.2);
+      text-align: center;
+      color: rgba(245, 230, 211, 0.6);
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    .nav-links {
+      display: none;
+    }
+    
+    .navbar {
+      .nav-content {
+        justify-content: center;
+      }
+    }
+  }
+</style>

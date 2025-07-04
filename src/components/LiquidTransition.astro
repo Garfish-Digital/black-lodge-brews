@@ -1,0 +1,185 @@
+---
+export interface Props {
+  direction?: 'up' | 'down' | 'left' | 'right';
+  duration?: number;
+  color?: string;
+}
+
+const { 
+  direction = 'up',
+  duration = 0.8,
+  color = '#FFA000'
+} = Astro.props;
+---
+
+<div class={`liquid-transition liquid-${direction}`} data-duration={duration} data-color={color}>
+  <svg class="liquid-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+    <path class="liquid-path" d=""></path>
+  </svg>
+</div>
+
+<style lang="scss">
+  @import '../styles/variables';
+
+  .liquid-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    
+    .liquid-svg {
+      width: 100%;
+      height: 100%;
+      
+      .liquid-path {
+        fill: var(--liquid-color, #{$amber-gold});
+      }
+    }
+    
+    &.liquid-up {
+      transform: translateY(100%);
+      
+      &.active {
+        animation: liquidUp var(--duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+    
+    &.liquid-down {
+      transform: translateY(-100%);
+      
+      &.active {
+        animation: liquidDown var(--duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+    
+    &.liquid-left {
+      transform: translateX(100%);
+      
+      &.active {
+        animation: liquidLeft var(--duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+    
+    &.liquid-right {
+      transform: translateX(-100%);
+      
+      &.active {
+        animation: liquidRight var(--duration, 0.8s) cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    }
+  }
+
+  @keyframes liquidUp {
+    0% {
+      transform: translateY(100%);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+
+  @keyframes liquidDown {
+    0% {
+      transform: translateY(-100%);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @keyframes liquidLeft {
+    0% {
+      transform: translateX(100%);
+    }
+    50% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  @keyframes liquidRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+</style>
+
+<script>
+  class LiquidTransition {
+    constructor(element) {
+      this.element = element;
+      this.svg = element.querySelector('.liquid-svg');
+      this.path = element.querySelector('.liquid-path');
+      this.duration = parseFloat(element.dataset.duration) || 0.8;
+      this.color = element.dataset.color || '#FFA000';
+      
+      this.setupPath();
+      this.setupEvents();
+    }
+    
+    setupPath() {
+      const direction = this.element.className.includes('liquid-up') ? 'up' :
+                       this.element.className.includes('liquid-down') ? 'down' :
+                       this.element.className.includes('liquid-left') ? 'left' : 'right';
+      
+      let pathData = '';
+      
+      switch (direction) {
+        case 'up':
+          pathData = 'M 0 100 Q 25 80 50 100 T 100 100 L 100 0 L 0 0 Z';
+          break;
+        case 'down':
+          pathData = 'M 0 0 Q 25 20 50 0 T 100 0 L 100 100 L 0 100 Z';
+          break;
+        case 'left':
+          pathData = 'M 100 0 Q 80 25 100 50 T 100 100 L 0 100 L 0 0 Z';
+          break;
+        case 'right':
+          pathData = 'M 0 0 Q 20 25 0 50 T 0 100 L 100 100 L 100 0 Z';
+          break;
+      }
+      
+      this.path.setAttribute('d', pathData);
+      this.element.style.setProperty('--liquid-color', this.color);
+      this.element.style.setProperty('--duration', `${this.duration}s`);
+    }
+    
+    setupEvents() {
+      this.element.addEventListener('animationend', () => {
+        this.element.classList.remove('active');
+      });
+    }
+    
+    trigger() {
+      this.element.classList.add('active');
+    }
+  }
+  
+  // Initialize all liquid transitions
+  document.addEventListener('DOMContentLoaded', () => {
+    const transitions = document.querySelectorAll('.liquid-transition');
+    transitions.forEach(transition => {
+      new LiquidTransition(transition);
+    });
+  });
+  
+  // Export for global use
+  window.LiquidTransition = LiquidTransition;
+</script>

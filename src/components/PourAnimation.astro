@@ -1,0 +1,438 @@
+---
+export interface Props {
+  glassType?: 'pint' | 'tulip' | 'snifter';
+  beerColor?: string;
+  foamColor?: string;
+  autoStart?: boolean;
+  duration?: number;
+}
+
+const { 
+  glassType = 'pint',
+  beerColor = '#FFA000',
+  foamColor = '#FFFBF0',
+  autoStart = false,
+  duration = 3
+} = Astro.props;
+---
+
+<div class={`pour-animation ${glassType}-glass`} data-beer-color={beerColor} data-foam-color={foamColor} data-duration={duration}>
+  <div class="pour-container">
+    <div class="tap-spout">
+      <div class="tap-handle"></div>
+      <div class="pour-stream"></div>
+    </div>
+    
+    <div class="beer-glass">
+      <div class="glass-body">
+        <div class="beer-level">
+          <div class="beer-liquid"></div>
+          <div class="beer-foam"></div>
+        </div>
+        <div class="glass-highlight"></div>
+      </div>
+      <div class="glass-base"></div>
+    </div>
+    
+    <div class="splash-effects">
+      <div class="splash-drop"></div>
+      <div class="splash-drop"></div>
+      <div class="splash-drop"></div>
+    </div>
+  </div>
+  
+  <button class="pour-button" style={autoStart ? "display: none;" : ''}>
+    <span>Pour Beer</span>
+  </button>
+</div>
+
+<style lang="scss">
+  @import '../styles/variables';
+
+  .pour-animation {
+    position: relative;
+    width: 300px;
+    height: 400px;
+    margin: 0 auto;
+    
+    .pour-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .tap-spout {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 80px;
+      
+      .tap-handle {
+        width: 60px;
+        height: 40px;
+        background: linear-gradient(135deg, #8D6E63, #5D4037);
+        border-radius: 30px 30px 8px 8px;
+        position: relative;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 35px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 20px;
+          height: 15px;
+          background: #3E2723;
+          border-radius: 0 0 10px 10px;
+        }
+      }
+      
+      .pour-stream {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 8px;
+        height: 0;
+        background: linear-gradient(to bottom, var(--beer-color, #{$amber-gold}), var(--beer-color, #{$amber-gold})AA);
+        border-radius: 4px;
+        opacity: 0;
+        transition: all 0.3s ease;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 1px;
+          width: 2px;
+          height: 100%;
+          background: rgba(255, 255, 255, 0.5);
+          border-radius: 2px;
+        }
+      }
+    }
+    
+    .beer-glass {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      
+      .glass-body {
+        position: relative;
+        overflow: hidden;
+        
+        .beer-level {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 0;
+          transition: height var(--pour-duration, 3s) ease-out;
+          
+          .beer-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to top, var(--beer-color, #{$amber-gold}), var(--beer-color, #{$amber-gold})CC);
+            border-radius: inherit;
+          }
+          
+          .beer-foam {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(to bottom, var(--foam-color, #{$beer-foam}), transparent);
+            border-radius: 50px 50px 0 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+          }
+        }
+        
+        .glass-highlight {
+          position: absolute;
+          top: 10%;
+          left: 15%;
+          width: 20%;
+          height: 60%;
+          background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+          border-radius: 10px;
+          opacity: 0.8;
+        }
+      }
+      
+      .glass-base {
+        width: 80px;
+        height: 8px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+        border-radius: 40px;
+        margin: 0 auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    // Glass types
+    &.pint-glass .glass-body {
+      width: 70px;
+      height: 140px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border-radius: 8px 8px 12px 12px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    &.tulip-glass .glass-body {
+      width: 60px;
+      height: 120px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border-radius: 30px 30px 8px 8px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    &.snifter-glass .glass-body {
+      width: 80px;
+      height: 100px;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      border-radius: 40px 40px 16px 16px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .splash-effects {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      
+      .splash-drop {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--beer-color, #{$amber-gold});
+        border-radius: 50%;
+        opacity: 0;
+        
+        &:nth-child(1) {
+          left: -10px;
+          animation: splashDrop1 0.8s ease-out;
+        }
+        
+        &:nth-child(2) {
+          left: 10px;
+          animation: splashDrop2 0.8s ease-out 0.1s;
+        }
+        
+        &:nth-child(3) {
+          left: 0;
+          animation: splashDrop3 0.8s ease-out 0.2s;
+        }
+      }
+    }
+    
+    .pour-button {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: $amber-gold;
+      color: $roasted-malt;
+      border: none;
+      padding: $spacing-sm $spacing-lg;
+      border-radius: $border-radius-md;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all $transition-medium;
+      
+      &:hover {
+        background: #FFD54F;
+        transform: translateX(-50%) translateY(-2px);
+        box-shadow: $shadow-lg;
+      }
+      
+      &:active {
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  }
+
+  @keyframes splashDrop1 {
+    0% {
+      opacity: 0;
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-15px) translateX(-5px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-5px) translateX(-10px);
+    }
+  }
+
+  @keyframes splashDrop2 {
+    0% {
+      opacity: 0;
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-20px) translateX(5px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-8px) translateX(12px);
+    }
+  }
+
+  @keyframes splashDrop3 {
+    0% {
+      opacity: 0;
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-12px) translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-3px) translateX(0);
+    }
+  }
+</style>
+
+<script>
+  class PourAnimation {
+    constructor(element) {
+      this.element = element;
+      this.stream = element.querySelector('.pour-stream');
+      this.beerLevel = element.querySelector('.beer-level');
+      this.foam = element.querySelector('.beer-foam');
+      this.splashes = element.querySelectorAll('.splash-drop');
+      this.button = element.querySelector('.pour-button');
+      
+      this.beerColor = element.dataset.beerColor || '#FFA000';
+      this.foamColor = element.dataset.foamColor || '#FFFBF0';
+      this.duration = parseFloat(element.dataset.duration) || 3;
+      
+      this.isPouring = false;
+      this.autoStart = this.button.style.display === 'none';
+      
+      this.setupColors();
+      this.setupEvents();
+      
+      if (this.autoStart) {
+        this.startPour();
+      }
+    }
+    
+    setupColors() {
+      this.element.style.setProperty('--beer-color', this.beerColor);
+      this.element.style.setProperty('--foam-color', this.foamColor);
+      this.element.style.setProperty('--pour-duration', `${this.duration}s`);
+    }
+    
+    setupEvents() {
+      if (this.button) {
+        this.button.addEventListener('click', () => {
+          if (!this.isPouring) {
+            this.startPour();
+          }
+        });
+      }
+      
+      // Intersection Observer for auto-start
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && this.autoStart && !this.isPouring) {
+            setTimeout(() => this.startPour(), 500);
+          }
+        });
+      }, {
+        threshold: 0.5
+      });
+      
+      observer.observe(this.element);
+    }
+    
+    startPour() {
+      if (this.isPouring) return;
+      
+      this.isPouring = true;
+      
+      // Hide button during pour
+      if (this.button) {
+        this.button.style.opacity = '0';
+        this.button.style.pointerEvents = 'none';
+      }
+      
+      // Start stream
+      this.stream.style.opacity = '1';
+      this.stream.style.height = '80px';
+      
+      // Start beer filling
+      setTimeout(() => {
+        this.beerLevel.style.height = '100%';
+        
+        // Add foam after beer is mostly filled
+        setTimeout(() => {
+          this.foam.style.opacity = '1';
+          
+          // Add splash effects
+          this.splashes.forEach((splash, index) => {
+            setTimeout(() => {
+              splash.style.animationPlayState = 'running';
+            }, index * 100);
+          });
+        }, this.duration * 800);
+        
+        // End pour
+        setTimeout(() => {
+          this.endPour();
+        }, this.duration * 1000);
+        
+      }, 500);
+    }
+    
+    endPour() {
+      this.stream.style.opacity = '0';
+      this.stream.style.height = '0';
+      
+      // Reset button
+      if (this.button && !this.autoStart) {
+        setTimeout(() => {
+          this.button.style.opacity = '1';
+          this.button.style.pointerEvents = 'auto';
+          this.isPouring = false;
+        }, 1000);
+      } else {
+        this.isPouring = false;
+      }
+    }
+    
+    reset() {
+      this.beerLevel.style.height = '0';
+      this.foam.style.opacity = '0';
+      this.stream.style.opacity = '0';
+      this.stream.style.height = '0';
+      this.isPouring = false;
+      
+      if (this.button) {
+        this.button.style.opacity = '1';
+        this.button.style.pointerEvents = 'auto';
+      }
+    }
+  }
+  
+  // Initialize all pour animations
+  document.addEventListener('DOMContentLoaded', () => {
+    const animations = document.querySelectorAll('.pour-animation');
+    animations.forEach(animation => {
+      new PourAnimation(animation);
+    });
+  });
+</script>
