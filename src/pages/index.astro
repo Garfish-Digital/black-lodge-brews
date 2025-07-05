@@ -106,22 +106,22 @@ const events = [
       <div class="hero-text">
         <h1 class="hero-title">Black Lodge Brews</h1>
         <p class="hero-subtitle">Where histories are made with every glass</p>
-        <div class="hero-buttons">
-          <a href="#taps" class="btn">Explore Our Taps</a>
-          <a href="#story" class="btn btn-outline">Our Story</a>
-        </div>
+        <!-- <div class="hero-buttons"> -->
+          <!-- <a href="#taps" class="btn">Explore Our Taps</a> -->
+          <!-- <a href="#story" class="btn btn-outline">Our Story</a> -->
+        <!-- </div> -->
       </div>
       <div class="hero-animation">
         <PourAnimation glassType="pint" beerColor="#FFA000" autoStart={true} duration={3} />
       </div>
     </div>
-    <MistParticles particleCount={40} color="#FFFFFF" size={4} speed={3.5} opacity={0.5} />
+    <MistParticles particleCount={40} color="#FFFFFF" size={4} speed={2.5} opacity={0.5} />
   </section>
 
   <!-- Tap List Section -->
   <section id="taps" class="section taps-section">
     <div class="container">
-      <h2 class="section-title">Our Mysterious Taps</h2>
+      <h2 class="section-title">Our Woodsy Taps</h2>
       <p class="section-subtitle">Each brew tells a story, each sip reveals a secret</p>
       
       <div class="beers-grid">
@@ -144,17 +144,17 @@ const events = [
           
           <p>The lodge itself stands as a testament to craftsmanship and mystery. Built from reclaimed timber and stone, it houses our state-of-the-art brewing equipment alongside relics and curiosities collected from around the world. Every corner tells a story, every shadow holds a secret.</p>
         </div>
-        <div class="story-visual">
+        <!-- <div class="story-visual">
           <div class="story-image">
             <img src={lodgeImage.src} alt="The Black Lodge - A rustic cabin nestled in the Pacific Northwest forest" />
             <div class="image-caption">
               <p>The Lodge at Dawn</p>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
-    <MistParticles particleCount={25} color="#F5E6D3" size={4} speed={1.5} opacity={0.3} />
+    <MistParticles particleCount={10} color="#FFA000" size={1} speed={0.15} opacity={0.3} />
   </section>
 
   <!-- Taproom Section -->

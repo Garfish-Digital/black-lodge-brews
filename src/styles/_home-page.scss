@@ -21,12 +21,17 @@
   
   .hero-text {
     .hero-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
       font-size: clamp(2.25rem, 4.5vw, 3.75rem);
       margin-bottom: calc($spacing-md * 0.75);
       background: linear-gradient(45deg, $amber-gold, #FFD54F);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+      padding-bottom: 0.1em;
     }
     
     .hero-subtitle {
@@ -251,10 +256,12 @@
 .contact-section {
   background: $dark-forest;
   background-image: 
-    linear-gradient(rgba(26, 14, 10, 0.85), rgba(62, 39, 35, 0.9)),
-    url('/images/istockphoto-1208869565-1024x1024.jpg');
-  background-size: cover;
-  background-position: center;
+    linear-gradient(rgba(26, 14, 10, 0.8), rgba(62, 39, 35, 0.85)),
+    url('/images/istockphoto-1393310438-1024x1024.jpg');
+  background-size: 150%;
+
+  background-position: calc(50% - 20vw) center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   
   .section-title {
@@ -342,6 +349,10 @@
     }
   }
   
+  .hero-animation {
+    transform: translateX(-20vw);
+  }
+  
   .story-content {
     grid-template-columns: 1fr !important;
     gap: $spacing-xl;
@@ -395,5 +406,64 @@
   
   .hero-buttons {
     justify-content: flex-start;
+  }
+}
+
+// Surface Duo specific (540x720)
+@media (max-width: 540px) {
+  .hero {
+    padding-top: 0;
+    
+    .hero-content {
+      padding: 0 calc($spacing-lg - 45px);
+    }
+    
+    .hero-text {
+      .hero-title {
+        font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.5);
+      }
+      
+      .hero-subtitle {
+        font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.5);
+      }
+    }
+  }
+}
+
+// Surface Duo landscape (720x540)
+@media (max-height: 540px) and (min-width: 720px) {
+  .hero {
+    .hero-content {
+      padding: 0 calc($spacing-lg - 80px);
+    }
+    
+    .hero-text {
+      .hero-title {
+        font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.5);
+      }
+      
+      .hero-subtitle {
+        font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.5);
+      }
+    }
+  }
+}
+
+// Desktop (1440px and above)
+@media (min-width: 1440px) {
+  .hero {
+    .hero-content {
+      padding: 0 calc($spacing-lg - 80px);
+    }
+    
+    .hero-text {
+      .hero-title {
+        font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.25);
+      }
+      
+      .hero-subtitle {
+        font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.25);
+      }
+    }
   }
 }
