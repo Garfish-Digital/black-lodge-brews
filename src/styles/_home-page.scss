@@ -8,6 +8,7 @@
   background: linear-gradient(135deg, $roasted-malt 0%, $primary-brown 50%, $dark-forest 100%);
   position: relative;
   overflow: hidden;
+  padding-top: 0;
   
   .hero-content {
     display: grid;
@@ -409,8 +410,8 @@
   }
 }
 
-// Surface Duo specific (540x720)
-@media (max-width: 540px) {
+// Surface Duo specific (540x720) - more targeted
+@media (max-width: 540px) and (min-aspect-ratio: 3/4) {
   .hero {
     padding-top: 0;
     
