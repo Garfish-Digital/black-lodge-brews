@@ -41,11 +41,11 @@ const {
       <div class="beer-stats">
         <div class="stat">
           <span class="stat-label">ABV</span>
-          <span class="stat-value">{abv}%</span>
+          <span class="stat-value" data-target={abv}>0%</span>
         </div>
         <div class="stat">
           <span class="stat-label">IBU</span>
-          <span class="stat-value">{ibu}</span>
+          <span class="stat-value" data-target={ibu}>0</span>
         </div>
       </div>
       
@@ -225,6 +225,7 @@ const {
           display: flex;
           flex-direction: column;
           align-items: center;
+          min-width: 50px;
           
           .stat-label {
             font-size: 0.8rem;
@@ -236,6 +237,8 @@ const {
             font-weight: 600;
             color: $amber-gold;
             font-size: 1.1rem;
+            min-width: 45px;
+            text-align: center;
           }
         }
       }
@@ -338,6 +341,7 @@ const {
       this.element = element;
       this.liquid = element.querySelector('.beer-liquid');
       this.color = element.dataset.color || '#FFA000';
+      this.hasAnimated = false;
       
       this.setupColor();
       this.setupIntersectionObserver();
@@ -352,6 +356,16 @@ const {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.element.classList.add('beer-fill');
+            // Only animate stats if not already animated
+            if (!this.hasAnimated) {
+              setTimeout(() => {
+                this.animateStats();
+                this.hasAnimated = true;
+              }, 500);
+            } else {
+              // If already animated, show final values immediately
+              this.showFinalValues();
+            }
           }
         });
       }, {
@@ -359,6 +373,66 @@ const {
       });
       
       observer.observe(this.element);
+    }
+    
+    animateStats() {
+      const statValues = this.element.querySelectorAll('.stat-value');
+      
+      statValues.forEach(statValue => {
+        const target = parseFloat(statValue.dataset.target);
+        const isABV = statValue.textContent.includes('%');
+        
+        this.animateNumber(statValue, 0, target, 3000, isABV);
+      });
+    }
+    
+    showFinalValues() {
+      const statValues = this.element.querySelectorAll('.stat-value');
+      
+      statValues.forEach(statValue => {
+        const target = parseFloat(statValue.dataset.target);
+        const isABV = statValue.textContent.includes('%');
+        
+        if (isABV) {
+          statValue.textContent = `${target}%`;
+        } else {
+          statValue.textContent = target;
+        }
+      });
+    }
+    
+    animateNumber(element, start, end, duration, isABV) {
+      const startTime = performance.now();
+      
+      const update = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Use easeOutCubic for smooth deceleration
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        const current = start + (end - start) * easeProgress;
+        const rounded = Math.round(current * 10) / 10; // Round to 1 decimal place
+        
+        if (isABV) {
+          element.textContent = `${rounded}%`;
+        } else {
+          element.textContent = Math.round(current);
+        }
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          // Ensure we end with exact target value
+          if (isABV) {
+            element.textContent = `${end}%`;
+          } else {
+            element.textContent = end;
+          }
+        }
+      };
+      
+      requestAnimationFrame(update);
     }
   }
   

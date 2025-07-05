@@ -21,20 +21,11 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
 <body>
   <div class="liquid-page-transition" id="pageTransition"></div>
   
-  <nav class="navbar">
-    <div class="container">
-      <div class="nav-content">
-        <a href="/" class="logo">
-          <span class="logo-text">Black Lodge Brews</span>
-        </a>
-        <div class="nav-links">
-          <a href="#taps" class="nav-link">Tap List</a>
-          <a href="#story" class="nav-link">Our Story</a>
-          <a href="#taproom" class="nav-link">Taproom</a>
-          <a href="#contact" class="nav-link">Contact</a>
-        </div>
-      </div>
-    </div>
+  <nav class="vertical-navbar">
+    <a href="#taps" class="nav-link">Tap List</a>
+    <a href="#story" class="nav-link">Our Story</a>
+    <a href="#taproom" class="nav-link">Taproom</a>
+    <a href="#contact" class="nav-link">Contact</a>
   </nav>
 
   <main>
@@ -116,70 +107,40 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
 <style lang="scss">
   @import '../styles/global.scss';
 
-  .navbar {
+
+  .vertical-navbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(26, 14, 10, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    transition: all $transition-medium;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    z-index: 1001;
     
-    .nav-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: $spacing-sm 0;
-    }
-    
-    .logo {
-      font-family: $font-display;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: $amber-gold;
+    .nav-link {
+      background: rgba(26, 14, 10, 0.9);
+      color: $foam-cream;
       text-decoration: none;
+      padding: calc($spacing-sm * 0.75);
+      border-radius: $border-radius-md;
+      font-weight: 500;
+      font-size: 0.675rem;
+      border: 1px solid rgba(255, 160, 0, 0.3);
+      transition: all $transition-fast;
+      text-align: center;
+      backdrop-filter: blur(10px);
       
       &:hover {
-        color: #FFD54F;
-      }
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: $spacing-lg;
-      
-      .nav-link {
-        color: $foam-cream;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color $transition-fast;
-        position: relative;
-        
-        &:hover {
-          color: $amber-gold;
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: -4px;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background: $amber-gold;
-          transition: width $transition-fast;
-        }
-        
-        &:hover::after {
-          width: 100%;
-        }
+        background: rgba(255, 160, 0, 0.2);
+        color: $amber-gold;
+        border-color: rgba(255, 160, 0, 0.5);
       }
     }
   }
 
   main {
-    padding-top: 80px;
+    padding-top: 0;
   }
 
   .footer {
@@ -213,15 +174,4 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
     }
   }
 
-  @media (max-width: $breakpoint-md) {
-    .nav-links {
-      display: none;
-    }
-    
-    .navbar {
-      .nav-content {
-        justify-content: center;
-      }
-    }
-  }
 </style>

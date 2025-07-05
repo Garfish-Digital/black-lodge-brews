@@ -11,7 +11,7 @@ const {
   glassType = 'pint',
   beerColor = '#FFA000',
   foamColor = '#FFFBF0',
-  autoStart = false,
+  autoStart = true,
   duration = 3
 } = Astro.props;
 ---
@@ -33,20 +33,10 @@ const {
       </div>
       <div class="glass-base"></div>
     </div>
-    
-    <div class="splash-effects">
-      <div class="splash-drop"></div>
-      <div class="splash-drop"></div>
-      <div class="splash-drop"></div>
-    </div>
   </div>
-  
-  <button class="pour-button" style={autoStart ? "display: none;" : ''}>
-    <span>Pour Beer</span>
-  </button>
 </div>
 
-<style lang="scss">
+<style lang="scss" is:global>
   @import '../styles/variables';
 
   .pour-animation {
@@ -96,7 +86,7 @@ const {
         transform: translateX(-50%);
         width: 8px;
         height: 0;
-        background: linear-gradient(to bottom, var(--beer-color, #{$amber-gold}), var(--beer-color, #{$amber-gold})AA);
+        background: linear-gradient(to bottom, #FFD54F, #FFA000);
         border-radius: 4px;
         opacity: 0;
         transition: all 0.3s ease;
@@ -123,14 +113,15 @@ const {
       .glass-body {
         position: relative;
         overflow: hidden;
+        margin: 0 auto;
         
         .beer-level {
           position: absolute;
           bottom: 0;
           left: 0;
           right: 0;
-          height: 0;
-          transition: height var(--pour-duration, 3s) ease-out;
+          height: 0%;
+          transition: height 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
           
           .beer-liquid {
             position: absolute;
@@ -138,7 +129,7 @@ const {
             left: 0;
             right: 0;
             height: 100%;
-            background: linear-gradient(to top, var(--beer-color, #{$amber-gold}), var(--beer-color, #{$amber-gold})CC);
+            background: linear-gradient(to top, #FFA000, #FFD54F);
             border-radius: inherit;
           }
           
@@ -148,7 +139,7 @@ const {
             left: 0;
             right: 0;
             height: 20px;
-            background: linear-gradient(to bottom, var(--foam-color, #{$beer-foam}), transparent);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), transparent);
             border-radius: 50px 50px 0 0;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -201,106 +192,40 @@ const {
       border-radius: 40px 40px 16px 16px;
       border: 2px solid rgba(255, 255, 255, 0.2);
     }
-    
-    .splash-effects {
-      position: absolute;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      
-      .splash-drop {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: var(--beer-color, #{$amber-gold});
-        border-radius: 50%;
-        opacity: 0;
-        
-        &:nth-child(1) {
-          left: -10px;
-          animation: splashDrop1 0.8s ease-out;
-        }
-        
-        &:nth-child(2) {
-          left: 10px;
-          animation: splashDrop2 0.8s ease-out 0.1s;
-        }
-        
-        &:nth-child(3) {
-          left: 0;
-          animation: splashDrop3 0.8s ease-out 0.2s;
-        }
-      }
+
+    /* Animation States */
+    &.pouring .pour-stream {
+      height: 120px !important;
+      opacity: 1 !important;
     }
-    
-    .pour-button {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      background: $amber-gold;
-      color: $roasted-malt;
-      border: none;
-      padding: $spacing-sm $spacing-lg;
-      border-radius: $border-radius-md;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all $transition-medium;
-      
-      &:hover {
-        background: #FFD54F;
-        transform: translateX(-50%) translateY(-2px);
-        box-shadow: $shadow-lg;
-      }
-      
-      &:active {
-        transform: translateX(-50%) translateY(0);
-      }
+
+    &.pouring .beer-level,
+    &.filled .beer-level {
+      height: 85% !important;
+    }
+
+    &.pouring .beer-foam,
+    &.filled .beer-foam {
+      opacity: 1 !important;
     }
   }
 
-  @keyframes splashDrop1 {
-    0% {
-      opacity: 0;
-      transform: translateY(0) translateX(0);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-15px) translateX(-5px);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-5px) translateX(-10px);
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .pour-animation {
+      width: 200px;
+      height: 300px;
     }
   }
 
-  @keyframes splashDrop2 {
-    0% {
-      opacity: 0;
-      transform: translateY(0) translateX(0);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-20px) translateX(5px);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-8px) translateX(12px);
-    }
-  }
-
-  @keyframes splashDrop3 {
-    0% {
-      opacity: 0;
-      transform: translateY(0) translateX(0);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-12px) translateX(0);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-3px) translateX(0);
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .pour-animation {
+      .beer-level,
+      .pour-stream,
+      .beer-foam {
+        transition: none;
+      }
     }
   }
 </style>
@@ -309,129 +234,43 @@ const {
   class PourAnimation {
     constructor(element) {
       this.element = element;
-      this.stream = element.querySelector('.pour-stream');
-      this.beerLevel = element.querySelector('.beer-level');
-      this.foam = element.querySelector('.beer-foam');
-      this.splashes = element.querySelectorAll('.splash-drop');
-      this.button = element.querySelector('.pour-button');
-      
-      this.beerColor = element.dataset.beerColor || '#FFA000';
-      this.foamColor = element.dataset.foamColor || '#FFFBF0';
-      this.duration = parseFloat(element.dataset.duration) || 3;
-      
       this.isPouring = false;
-      this.autoStart = this.button.style.display === 'none';
       
-      this.setupColors();
-      this.setupEvents();
-      
-      if (this.autoStart) {
-        this.startPour();
-      }
+      // Start immediately for testing
+      setTimeout(() => {
+        this.startPouring();
+      }, 1000);
     }
-    
-    setupColors() {
-      this.element.style.setProperty('--beer-color', this.beerColor);
-      this.element.style.setProperty('--foam-color', this.foamColor);
-      this.element.style.setProperty('--pour-duration', `${this.duration}s`);
-    }
-    
-    setupEvents() {
-      if (this.button) {
-        this.button.addEventListener('click', () => {
-          if (!this.isPouring) {
-            this.startPour();
-          }
-        });
-      }
-      
-      // Intersection Observer for auto-start
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && this.autoStart && !this.isPouring) {
-            setTimeout(() => this.startPour(), 500);
-          }
-        });
-      }, {
-        threshold: 0.5
-      });
-      
-      observer.observe(this.element);
-    }
-    
-    startPour() {
+
+    startPouring() {
       if (this.isPouring) return;
       
+      console.log('Starting pour animation');
       this.isPouring = true;
-      
-      // Hide button during pour
-      if (this.button) {
-        this.button.style.opacity = '0';
-        this.button.style.pointerEvents = 'none';
-      }
-      
-      // Start stream
-      this.stream.style.opacity = '1';
-      this.stream.style.height = '80px';
-      
-      // Start beer filling
+      this.element.classList.add('pouring');
+      console.log('Added pouring class to:', this.element);
+
+      // Stop after 4 seconds
       setTimeout(() => {
-        this.beerLevel.style.height = '100%';
-        
-        // Add foam after beer is mostly filled
-        setTimeout(() => {
-          this.foam.style.opacity = '1';
-          
-          // Add splash effects
-          this.splashes.forEach((splash, index) => {
-            setTimeout(() => {
-              splash.style.animationPlayState = 'running';
-            }, index * 100);
-          });
-        }, this.duration * 800);
-        
-        // End pour
-        setTimeout(() => {
-          this.endPour();
-        }, this.duration * 1000);
-        
-      }, 500);
+        this.stopPouring();
+      }, 4000);
     }
-    
-    endPour() {
-      this.stream.style.opacity = '0';
-      this.stream.style.height = '0';
-      
-      // Reset button
-      if (this.button && !this.autoStart) {
-        setTimeout(() => {
-          this.button.style.opacity = '1';
-          this.button.style.pointerEvents = 'auto';
-          this.isPouring = false;
-        }, 1000);
-      } else {
-        this.isPouring = false;
-      }
-    }
-    
-    reset() {
-      this.beerLevel.style.height = '0';
-      this.foam.style.opacity = '0';
-      this.stream.style.opacity = '0';
-      this.stream.style.height = '0';
+
+    stopPouring() {
+      console.log('Stopping pour animation');
       this.isPouring = false;
-      
-      if (this.button) {
-        this.button.style.opacity = '1';
-        this.button.style.pointerEvents = 'auto';
-      }
+      this.element.classList.remove('pouring');
+      this.element.classList.add('filled');
     }
   }
-  
-  // Initialize all pour animations
+
+  // Initialize pour animations
   document.addEventListener('DOMContentLoaded', () => {
-    const animations = document.querySelectorAll('.pour-animation');
-    animations.forEach(animation => {
+    console.log('DOM loaded, looking for pour animations');
+    const pourAnimations = document.querySelectorAll('.pour-animation');
+    console.log('Found animations:', pourAnimations.length);
+    pourAnimations.forEach(animation => {
+      console.log('Initializing animation for:', animation);
       new PourAnimation(animation);
     });
   });

@@ -1,0 +1,399 @@
+@import 'variables';
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $roasted-malt 0%, $primary-brown 50%, $dark-forest 100%);
+  position: relative;
+  overflow: hidden;
+  
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xxl;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+  }
+  
+  .hero-text {
+    .hero-title {
+      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      margin-bottom: calc($spacing-md * 0.75);
+      background: linear-gradient(45deg, $amber-gold, #FFD54F);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(0.9rem, 1.5vw, 1.125rem);
+      margin-bottom: calc($spacing-xl * 0.75);
+      color: rgba(245, 230, 211, 0.9);
+      font-style: italic;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: calc($spacing-md * 0.75);
+      
+      .btn {
+        padding: calc($spacing-sm * 0.75) calc($spacing-md * 0.75);
+        font-size: 0.9rem;
+        width: fit-content;
+      }
+    }
+  }
+  
+  .hero-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.taps-section {
+  background: linear-gradient(135deg, $primary-brown 0%, $roasted-malt 100%);
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .section-subtitle {
+    text-align: center;
+    color: rgba(245, 230, 211, 0.8);
+    margin-bottom: $spacing-xxl;
+    font-style: italic;
+  }
+  
+  .beers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: $spacing-xl;
+  }
+}
+
+.story-section {
+  background: $dark-forest;
+  background-image: 
+    linear-gradient(rgba(27, 58, 27, 0.85), rgba(26, 14, 10, 0.9)),
+    url('/images/istockphoto-923623146-1024x1024.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  
+  .story-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: $spacing-xxl;
+    align-items: center;
+  }
+  
+  .story-text {
+    h2 {
+      margin-bottom: $spacing-lg;
+      color: $amber-gold;
+    }
+    
+    p {
+      margin-bottom: $spacing-md;
+      line-height: 1.7;
+      color: rgba(245, 230, 211, 0.9);
+    }
+  }
+  
+  .story-visual {
+    .story-image {
+      position: relative;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
+      box-shadow: $shadow-xl;
+      
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: $border-radius-lg;
+      }
+      
+      .image-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(26, 14, 10, 0.9));
+        padding: $spacing-lg $spacing-md $spacing-md;
+        
+        p {
+          color: $amber-gold;
+          font-weight: 600;
+          margin: 0;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+.taproom-section {
+  background: linear-gradient(135deg, $roasted-malt 0%, $primary-brown 100%);
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .section-subtitle {
+    text-align: center;
+    color: rgba(245, 230, 211, 0.8);
+    margin-bottom: $spacing-xxl;
+    font-style: italic;
+  }
+  
+  .taproom-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xxl;
+  }
+  
+  .taproom-description {
+    h3 {
+      color: $amber-gold;
+      margin-bottom: $spacing-lg;
+    }
+    
+    p {
+      margin-bottom: $spacing-lg;
+      line-height: 1.6;
+      color: rgba(245, 230, 211, 0.9);
+    }
+  }
+  
+  .taproom-features {
+    display: grid;
+    gap: $spacing-md;
+    
+    .feature {
+      background: rgba(245, 230, 211, 0.05);
+      padding: $spacing-md;
+      border-radius: $border-radius-md;
+      border: 1px solid rgba(245, 230, 211, 0.1);
+      
+      h4 {
+        color: $amber-gold;
+        margin-bottom: $spacing-xs;
+        font-size: 1rem;
+      }
+      
+      p {
+        color: rgba(245, 230, 211, 0.8);
+        font-size: 0.9rem;
+        margin: 0;
+      }
+    }
+  }
+  
+  .events-calendar {
+    h3 {
+      color: $amber-gold;
+      margin-bottom: $spacing-lg;
+    }
+    
+    .events-list {
+      display: grid;
+      gap: $spacing-md;
+    }
+    
+    .event-item {
+      background: rgba(245, 230, 211, 0.05);
+      padding: $spacing-md;
+      border-radius: $border-radius-md;
+      border: 1px solid rgba(245, 230, 211, 0.1);
+      display: flex;
+      gap: $spacing-md;
+      
+      .event-date {
+        background: $amber-gold;
+        color: $roasted-malt;
+        padding: $spacing-xs $spacing-sm;
+        border-radius: $border-radius-sm;
+        font-weight: 600;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+      }
+      
+      .event-details {
+        flex: 1;
+        
+        h4 {
+          color: $foam-cream;
+          margin-bottom: $spacing-xs;
+        }
+        
+        p {
+          color: rgba(245, 230, 211, 0.8);
+          font-size: 0.9rem;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.contact-section {
+  background: $dark-forest;
+  background-image: 
+    linear-gradient(rgba(26, 14, 10, 0.85), rgba(62, 39, 35, 0.9)),
+    url('/images/istockphoto-1208869565-1024x1024.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: $spacing-xxl;
+  }
+  
+  .contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xxl;
+  }
+  
+  .contact-info {
+    display: grid;
+    gap: $spacing-lg;
+    
+    .contact-item {
+      background: rgba(245, 230, 211, 0.05);
+      padding: $spacing-lg;
+      border-radius: $border-radius-md;
+      border: 1px solid rgba(245, 230, 211, 0.1);
+      
+      h3 {
+        color: $amber-gold;
+        margin-bottom: $spacing-sm;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        
+        .contact-icon {
+          width: 20px;
+          height: 20px;
+          flex-shrink: 0;
+        }
+      }
+      
+      p {
+        color: rgba(245, 230, 211, 0.9);
+        line-height: 1.6;
+        margin: 0;
+      }
+    }
+  }
+  
+  .map-placeholder {
+    background: rgba(245, 230, 211, 0.05);
+    border-radius: $border-radius-lg;
+    border: 1px solid rgba(245, 230, 211, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    
+    .map-content {
+      text-align: center;
+      
+      span {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: $spacing-md;
+      }
+      
+      p {
+        color: rgba(245, 230, 211, 0.8);
+        margin-bottom: $spacing-xs;
+        
+        &:first-of-type {
+          color: $amber-gold;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .hero .hero-content {
+    grid-template-columns: 1fr;
+    gap: $spacing-xl;
+    
+    .hero-text {
+      text-align: left;
+    }
+  }
+  
+  .story-content {
+    grid-template-columns: 1fr !important;
+    gap: $spacing-xl;
+  }
+  
+  .taproom-content {
+    grid-template-columns: 1fr !important;
+    gap: $spacing-xl;
+  }
+  
+  .contact-content {
+    grid-template-columns: 1fr !important;
+    gap: $spacing-xl;
+  }
+}
+
+// Gooey effect styles
+.gooey-card {
+  filter: url(#gooey-effect);
+  transform: scale(1);
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  &.gooey-animate {
+    animation: gooey-morph 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+}
+
+@keyframes gooey-morph {
+  0% {
+    transform: scale(0.8) scaleY(1.2);
+    filter: url(#gooey-effect) blur(2px);
+  }
+  30% {
+    transform: scale(1.05) scaleY(0.9);
+    filter: url(#gooey-effect) blur(1px);
+  }
+  60% {
+    transform: scale(0.98) scaleY(1.05);
+    filter: url(#gooey-effect) blur(0.5px);
+  }
+  100% {
+    transform: scale(1) scaleY(1);
+    filter: url(#gooey-effect) blur(0px);
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .beers-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .hero-buttons {
+    justify-content: flex-start;
+  }
+}

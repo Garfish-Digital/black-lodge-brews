@@ -1,0 +1,508 @@
+---
+export interface Props {
+  currentPage?: string;
+}
+
+const { currentPage = 'home' } = Astro.props;
+---
+
+<nav class="floating-islands-nav">
+  <!-- Logo Island -->
+  <div class="nav-island logo-island" data-section="hero">
+    <a href="/" class="island-content logo-content">
+      <span class="logo-icon">🍺</span>
+      <span class="logo-text">Black Lodge</span>
+    </a>
+  </div>
+
+  <!-- Main Navigation Islands -->
+  <div class="nav-island main-nav-island" data-section="hero">
+    <div class="island-content nav-items">
+      <a href="#taps" class="nav-item" data-target="taps">
+        <span class="nav-icon">🍺</span>
+        <span class="nav-label">Taps</span>
+      </a>
+      <a href="#story" class="nav-item" data-target="story">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Story</span>
+      </a>
+      <a href="#taproom" class="nav-item" data-target="taproom">
+        <span class="nav-icon">🎵</span>
+        <span class="nav-label">Taproom</span>
+      </a>
+      <a href="#contact" class="nav-item" data-target="contact">
+        <span class="nav-icon">📍</span>
+        <span class="nav-label">Contact</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Section Indicator Island -->
+  <div class="nav-island indicator-island">
+    <div class="island-content section-indicator">
+      <div class="indicator-dot"></div>
+      <span class="section-name">Welcome</span>
+    </div>
+  </div>
+
+  <!-- Quick Actions Island -->
+  <div class="nav-island actions-island" data-section="taps,taproom">
+    <div class="island-content quick-actions">
+      <button class="action-btn" id="scrollTop" title="Back to Top">
+        <span>⬆️</span>
+      </button>
+      <button class="action-btn" id="shareBtn" title="Share">
+        <span>📤</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hours Island -->
+  <div class="nav-island hours-island" data-section="contact">
+    <div class="island-content hours-info">
+      <div class="status-dot open"></div>
+      <div class="hours-text">
+        <span class="status">Open Now</span>
+        <span class="time">4PM - 10PM</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style lang="scss">
+  @import '../styles/variables';
+
+  .floating-islands-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    
+    .nav-island {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(-20px) scale(0.8);
+      transition: all $transition-medium;
+      pointer-events: auto;
+      
+      &.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      
+      .island-content {
+        background: rgba(26, 14, 10, 0.9);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 160, 0, 0.3);
+        border-radius: 20px;
+        padding: $spacing-sm $spacing-md;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 160, 0, 0.1);
+        transition: all $transition-medium;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 160, 0, 0.2);
+          border-color: rgba(255, 160, 0, 0.5);
+        }
+      }
+    }
+    
+    // Logo Island
+    .logo-island {
+      top: $spacing-lg;
+      left: $spacing-lg;
+      
+      .logo-content {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        text-decoration: none;
+        color: $amber-gold;
+        font-family: $font-display;
+        font-weight: 700;
+        font-size: 1.1rem;
+        
+        .logo-icon {
+          font-size: 1.5rem;
+          animation: logoFloat 3s ease-in-out infinite;
+        }
+        
+        &:hover {
+          color: #FFD54F;
+        }
+      }
+    }
+    
+    // Main Navigation Island
+    .main-nav-island {
+      top: $spacing-lg;
+      right: $spacing-lg;
+      
+      .nav-items {
+        display: flex;
+        gap: $spacing-xs;
+        
+        .nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          padding: $spacing-xs $spacing-sm;
+          text-decoration: none;
+          color: $foam-cream;
+          border-radius: $border-radius-md;
+          transition: all $transition-fast;
+          position: relative;
+          
+          .nav-icon {
+            font-size: 1.2rem;
+          }
+          
+          .nav-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+          }
+          
+          &:hover {
+            background: rgba(255, 160, 0, 0.2);
+            color: $amber-gold;
+            transform: scale(1.05);
+          }
+          
+          &.active {
+            background: rgba(255, 160, 0, 0.3);
+            color: $amber-gold;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -8px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 4px;
+              height: 4px;
+              background: $amber-gold;
+              border-radius: 50%;
+              animation: pulse 2s infinite;
+            }
+          }
+        }
+      }
+    }
+    
+    // Section Indicator Island
+    .indicator-island {
+      bottom: $spacing-lg;
+      left: $spacing-lg;
+      
+      .section-indicator {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        
+        .indicator-dot {
+          width: 8px;
+          height: 8px;
+          background: $amber-gold;
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+        
+        .section-name {
+          color: $foam-cream;
+          font-weight: 500;
+          font-size: 0.9rem;
+        }
+      }
+    }
+    
+    // Quick Actions Island
+    .actions-island {
+      bottom: $spacing-lg;
+      right: $spacing-lg;
+      
+      .quick-actions {
+        display: flex;
+        gap: $spacing-xs;
+        
+        .action-btn {
+          background: rgba(255, 160, 0, 0.2);
+          border: 1px solid rgba(255, 160, 0, 0.3);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all $transition-fast;
+          font-size: 1rem;
+          
+          &:hover {
+            background: rgba(255, 160, 0, 0.4);
+            transform: scale(1.1);
+          }
+          
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+      }
+    }
+    
+    // Hours Island
+    .hours-island {
+      top: 50%;
+      right: $spacing-lg;
+      transform: translateY(-50%);
+      
+      .hours-info {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          
+          &.open {
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+          }
+          
+          &.closed {
+            background: #FF5722;
+          }
+        }
+        
+        .hours-text {
+          display: flex;
+          flex-direction: column;
+          
+          .status {
+            font-size: 0.8rem;
+            color: $amber-gold;
+            font-weight: 600;
+          }
+          
+          .time {
+            font-size: 0.7rem;
+            color: rgba(245, 230, 211, 0.8);
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    .floating-islands-nav {
+      .nav-island {
+        &.main-nav-island {
+          top: auto;
+          bottom: $spacing-lg;
+          left: 50%;
+          right: auto;
+          transform: translateX(-50%);
+          
+          &.visible {
+            transform: translateX(-50%) translateY(0) scale(1);
+          }
+          
+          .nav-items {
+            .nav-item {
+              .nav-label {
+                display: none;
+              }
+            }
+          }
+        }
+        
+        &.actions-island {
+          bottom: calc(#{$spacing-lg} + 80px);
+          right: 50%;
+          transform: translateX(50%);
+          
+          &.visible {
+            transform: translateX(50%) translateY(0) scale(1);
+          }
+        }
+        
+        &.hours-island {
+          top: auto;
+          bottom: $spacing-lg;
+          right: $spacing-lg;
+          left: auto;
+          transform: none;
+          
+          &.visible {
+            transform: translateY(0) scale(1);
+          }
+        }
+        
+        &.indicator-island {
+          bottom: $spacing-lg;
+          left: $spacing-lg;
+          right: auto;
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  class FloatingIslandsNav {
+    constructor() {
+      this.islands = document.querySelectorAll('.nav-island');
+      this.navItems = document.querySelectorAll('.nav-item');
+      this.indicator = document.querySelector('.section-name');
+      this.sections = [];
+      this.currentSection = 'hero';
+      
+      this.init();
+    }
+    
+    init() {
+      this.setupSections();
+      this.setupEventListeners();
+      this.updateVisibility();
+      this.setupScrollListener();
+    }
+    
+    setupSections() {
+      this.sections = [
+        { id: 'hero', name: 'Welcome', element: document.querySelector('.hero') },
+        { id: 'taps', name: 'Our Taps', element: document.getElementById('taps') },
+        { id: 'story', name: 'Our Story', element: document.getElementById('story') },
+        { id: 'taproom', name: 'Taproom', element: document.getElementById('taproom') },
+        { id: 'contact', name: 'Contact', element: document.getElementById('contact') }
+      ];
+    }
+    
+    setupEventListeners() {
+      // Navigation clicks
+      this.navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = item.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(target);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+      
+      // Quick actions
+      document.getElementById('scrollTop')?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      
+      document.getElementById('shareBtn')?.addEventListener('click', () => {
+        if (navigator.share) {
+          navigator.share({
+            title: 'Black Lodge Brews',
+            url: window.location.href
+          });
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+        }
+      });
+    }
+    
+    setupScrollListener() {
+      let ticking = false;
+      
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            this.handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    }
+    
+    handleScroll() {
+      const scrollTop = window.pageYOffset;
+      const windowHeight = window.innerHeight;
+      
+      // Find current section
+      let currentSection = 'hero';
+      this.sections.forEach(section => {
+        if (section.element) {
+          const rect = section.element.getBoundingClientRect();
+          if (rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2) {
+            currentSection = section.id;
+          }
+        }
+      });
+      
+      // Update if section changed
+      if (currentSection !== this.currentSection) {
+        this.currentSection = currentSection;
+        this.updateActiveState();
+        this.updateVisibility();
+        this.updateIndicator();
+      }
+    }
+    
+    updateActiveState() {
+      this.navItems.forEach(item => {
+        const target = item.getAttribute('data-target');
+        if (target === this.currentSection) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+    
+    updateVisibility() {
+      this.islands.forEach(island => {
+        const sections = island.getAttribute('data-section');
+        
+        if (!sections) {
+          // Always visible islands
+          island.classList.add('visible');
+        } else {
+          const sectionList = sections.split(',');
+          if (sectionList.includes(this.currentSection)) {
+            island.classList.add('visible');
+          } else {
+            island.classList.remove('visible');
+          }
+        }
+      });
+    }
+    
+    updateIndicator() {
+      const section = this.sections.find(s => s.id === this.currentSection);
+      if (section && this.indicator) {
+        this.indicator.textContent = section.name;
+      }
+    }
+  }
+  
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    new FloatingIslandsNav();
+  });
+</script>
