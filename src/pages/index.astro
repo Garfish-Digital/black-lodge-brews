@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import LiquidTransition from '../components/LiquidTransition.astro';
-import BeerCard from '../components/BeerCard.astro';
-import MistParticles from '../components/MistParticles.astro';
-import PourAnimation from '../components/PourAnimation.astro';
-import lodgeImage from '../assets/images/istockphoto-1762132433-1024x1024.jpg';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LiquidTransition from "../components/LiquidTransition.astro";
+import BeerCard from "../components/BeerCard.astro";
+import MistParticles from "../components/MistParticles.astro";
+// import PourAnimation from '../components/PourAnimation.astro';
+// import lodgeImage from '../assets/images/istockphoto-1762132433-1024x1024.jpg';
 
 const beers = [
   {
@@ -12,122 +12,142 @@ const beers = [
     type: "India Pale Ale",
     abv: 6.8,
     ibu: 65,
-    description: "A mysterious blend of citrus and pine with a dark, smoky finish that lingers like secrets in the night.",
+    description:
+      "A mysterious blend of citrus and pine with a dark, smoky finish that lingers like secrets in the night.",
     color: "#D2691E",
-    available: true
+    available: true,
   },
   {
     name: "Midnight Porter",
     type: "Robust Porter",
     abv: 5.4,
     ibu: 35,
-    description: "Rich chocolate and coffee notes with a velvety smooth texture. Perfect for contemplating life's mysteries.",
+    description:
+      "Rich chocolate and coffee notes with a velvety smooth texture. Perfect for contemplating life's mysteries.",
     color: "#2F1B14",
-    available: true
+    available: true,
   },
   {
     name: "Copper Log Lager",
     type: "Vienna Lager",
     abv: 4.8,
     ibu: 22,
-    description: "Crisp and clean with a subtle malty sweetness and a hint of the forest floor after rain.",
+    description:
+      "Crisp and clean with a subtle malty sweetness and a hint of the forest floor after rain.",
     color: "#B87333",
-    available: true
+    available: true,
   },
   {
     name: "Red Room Ale",
     type: "American Red Ale",
     abv: 5.9,
     ibu: 40,
-    description: "A bold red ale with caramel backbone and mysterious floral notes that dance on the palate.",
+    description:
+      "A bold red ale with caramel backbone and mysterious floral notes that dance on the palate.",
     color: "#A0522D",
-    available: false
+    available: false,
   },
   {
     name: "Twin Peaks Wheat",
     type: "Hefeweizen",
     abv: 4.2,
     ibu: 15,
-    description: "Light and cloudy with notes of banana and clove, as enigmatic as morning mist on the mountains.",
+    description:
+      "Light and cloudy with notes of banana and clove, as enigmatic as morning mist on the mountains.",
     color: "#F4A460",
-    available: true
+    available: true,
   },
   {
     name: "Lodge Stout",
     type: "Imperial Stout",
     abv: 8.2,
     ibu: 55,
-    description: "Deep, dark, and complex with notes of vanilla, oak, and whispers of ancient secrets.",
+    description:
+      "Deep, dark, and complex with notes of vanilla, oak, and whispers of ancient secrets.",
     color: "#1C1C1C",
-    available: true
-  }
+    available: true,
+  },
 ];
 
 const events = [
   {
     date: "July 15",
     title: "Mystery Beer Release",
-    description: "Unveiling our latest creation - a beer shrouded in mystery"
+    description: "Unveiling our latest creation - a beer shrouded in mystery",
   },
   {
     date: "July 22",
     title: "Trivia Night",
-    description: "Test your knowledge of mysteries, both solved and unsolved"
+    description: "Test your knowledge of mysteries, both solved and unsolved",
   },
   {
     date: "July 29",
     title: "Live Jazz Evening",
-    description: "Sultry sounds to accompany your evening libations with friends"
-  }
+    description:
+      "Sultry sounds to accompany your evening libations with friends",
+  },
 ];
 ---
 
-<BaseLayout title="Black Lodge Brews - Premium Craft Brewery" description="Enter the mysterious world of Black Lodge Brews, where every sip tells a story and every brew holds secrets waiting to be discovered.">
+<BaseLayout
+  title="Black Lodge Brews - Premium Craft Brewery"
+  description="Enter the mysterious world of Black Lodge Brews, where every sip tells a story and every brew holds secrets waiting to be discovered."
+>
   <!-- SVG Filters for Gooey Effect -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
       <filter id="gooey-effect">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
-        <feColorMatrix in="blur" mode="matrix" values="
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8"></feGaussianBlur>
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          values="
           1 0 0 0 0  
           0 1 0 0 0  
           0 0 1 0 0  
-          0 0 0 20 -10" />
-        <feComposite in="SourceGraphic" in2="colormatrix" operator="over"/>
+          0 0 0 20 -10"
+        ></feColorMatrix>
+        <feComposite in="SourceGraphic" in2="colormatrix" operator="over"
+        ></feComposite>
       </filter>
     </defs>
   </svg>
-  
+
   <LiquidTransition direction="up" duration={0.8} color="#FFA000" />
-  
+
   <!-- Hero Section -->
-  <section class="hero section">
+  <section class="hero section filling-section">
     <div class="hero-content">
       <div class="hero-text">
-        <h1 class="hero-title">Black Lodge Brews</h1>
-        <p class="hero-subtitle">Where histories are made with every glass</p>
-        <!-- <div class="hero-buttons"> -->
-          <!-- <a href="#taps" class="btn">Explore Our Taps</a> -->
-          <!-- <a href="#story" class="btn btn-outline">Our Story</a> -->
-        <!-- </div> -->
-      </div>
-      <div class="hero-animation">
-        <PourAnimation glassType="pint" beerColor="#FFA000" autoStart={true} duration={3} />
+        <h1 class="hero-title">Black<br /> Lodge<br /> Brews</h1>
+        <p class="hero-subtitle">Where there are histories<br>in every glass</p>
       </div>
     </div>
-    <MistParticles particleCount={40} color="#FFFFFF" size={4} speed={2.5} opacity={0.5} />
+    <div class="beer-level-container">
+      <div class="beer-level">
+        <div class="beer-liquid"></div>
+        <div class="beer-foam"></div>
+      </div>
+    </div>
+    <MistParticles
+      particleCount={40}
+      color="#FFFFFF"
+      size={3}
+      speed={1.5}
+      opacity={0.5}
+    />
   </section>
 
   <!-- Tap List Section -->
   <section id="taps" class="section taps-section">
     <div class="container">
       <h2 class="section-title">Our Woodsy Taps</h2>
-      <p class="section-subtitle">Each brew tells a story, each sip reveals a secret</p>
-      
+      <p class="section-subtitle">
+        Each brew tells a story, each sip reveals a secret
+      </p>
+
       <div class="beers-grid">
-        {beers.map((beer) => (
-          <BeerCard {...beer} />
-        ))}
+        {beers.map((beer) => <BeerCard {...beer} />)}
       </div>
     </div>
   </section>
@@ -138,11 +158,29 @@ const events = [
       <div class="story-content">
         <div class="story-text">
           <h2>The Legend of Black Lodge</h2>
-          <p>Deep in the heart of the Pacific Northwest, where ancient forests whisper secrets and mist dances through towering pines, lies the enigmatic Black Lodge Brewery. Founded in 2023 by a group of passionate brewers who believe that the best ales are born from mystery and crafted with intention.</p>
-          
-          <p>Our brewing process is as much art as it is science. We source our ingredients from local farms that have been tended by generations of families who understand the land's secrets. Each batch is carefully crafted in small quantities, ensuring that every glass carries the essence of our mysterious heritage.</p>
-          
-          <p>The lodge itself stands as a testament to craftsmanship and mystery. Built from reclaimed timber and stone, it houses our state-of-the-art brewing equipment alongside relics and curiosities collected from around the world. Every corner tells a story, every shadow holds a secret.</p>
+          <p>
+            Deep in the heart of the Pacific Northwest, where ancient forests
+            whisper secrets and mist dances through towering pines, lies the
+            enigmatic Black Lodge Brewery. Founded in 2023 by a group of
+            passionate brewers who believe that the best ales are born from
+            mystery and crafted with intention.
+          </p>
+
+          <p>
+            Our brewing process is as much art as it is science. We source our
+            ingredients from local farms that have been tended by generations of
+            families who understand the land's secrets. Each batch is carefully
+            crafted in small quantities, ensuring that every glass carries the
+            essence of our mysterious heritage.
+          </p>
+
+          <p>
+            The lodge itself stands as a testament to craftsmanship and mystery.
+            Built from reclaimed timber and stone, it houses our
+            state-of-the-art brewing equipment alongside relics and curiosities
+            collected from around the world. Every corner tells a story, every
+            shadow holds a secret.
+          </p>
         </div>
         <!-- <div class="story-visual">
           <div class="story-image">
@@ -154,46 +192,65 @@ const events = [
         </div> -->
       </div>
     </div>
-    <MistParticles particleCount={10} color="#FFA000" size={1} speed={0.15} opacity={0.3} />
+    <MistParticles
+      particleCount={10}
+      color="#FFA000"
+      size={1}
+      speed={0.15}
+      opacity={0.3}
+    />
   </section>
 
   <!-- Taproom Section -->
   <section id="taproom" class="section taproom-section">
     <div class="container">
       <h2 class="section-title">The Taproom Experience</h2>
-      <p class="section-subtitle">Step into a world where every detail matters</p>
-      
+      <p class="section-subtitle">
+        Step into a world where every detail matters
+      </p>
+
       <div class="taproom-content">
         <div class="taproom-description">
-          <h3>Immerse Yourself in Mystery</h3>          
+          <h3>Immerse Yourself</h3>
           <div class="taproom-features">
             <div class="feature gooey-card">
               <h4>🍺 Fresh Pours</h4>
-              <p>All our beers are served at the perfect temperature from our custom tap system</p>
+              <p>
+                All our beers are served at the perfect temperature from our
+                custom tap system
+              </p>
             </div>
             <div class="feature gooey-card">
               <h4>🎵 Live Music</h4>
-              <p>Regular performances featuring local jazz, folk, and ambient artists</p>
+              <p>
+                Regular performances featuring local jazz groups, folk singers,
+                and ambient artists
+              </p>
             </div>
             <div class="feature gooey-card">
               <h4>🥨 Artisan Bites</h4>
-              <p>Carefully selected food pairings that complement our unique brews</p>
+              <p>
+                Carefully selected food pairings, sweet and savory, that
+                complement our unique brews
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div class="events-calendar">
           <h3>Upcoming Events</h3>
           <div class="events-list">
-            {events.map((event) => (
-              <div class="event-item gooey-card">
-                <div class="event-date">{event.date}</div>
-                <div class="event-details">
-                  <h4>{event.title}</h4>
-                  <p>{event.description}</p>
+            {
+              events.map((event) => (
+                <div class="event-item gooey-card">
+                  <div class="event-date">{event.date}</div>
+                  <div class="event-details">
+                    <h4>{event.title}</h4>
+                    <p>{event.description}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            }
           </div>
         </div>
       </div>
@@ -204,32 +261,81 @@ const events = [
   <section id="contact" class="section contact-section">
     <div class="container">
       <h2 class="section-title">Find Your Way to the Lodge</h2>
-      
+
       <div class="contact-content">
         <div class="contact-info">
           <div class="contact-item">
-            <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFD54F" class="contact-icon"><path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" /></svg> Location</h3>
-            <p>123 Brewery Lane<br>Portland, OR 97210</p>
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#FFD54F"
+                class="contact-icon"
+                ><path
+                  fill-rule="evenodd"
+                  d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                  clip-rule="evenodd"></path></svg
+              > Location
+            </h3>
+            <p>123 Brewery Lane<br />Portland, OR 97210</p>
           </div>
-          
+
           <div class="contact-item">
-            <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFD54F" class="contact-icon"><path d="M10.5 18.75a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" /><path fill-rule="evenodd" d="M8.625.75A3.375 3.375 0 0 0 5.25 4.125v15.75a3.375 3.375 0 0 0 3.375 3.375h6.75a3.375 3.375 0 0 0 3.375-3.375V4.125A3.375 3.375 0 0 0 15.375.75h-6.75ZM7.5 4.125C7.5 3.504 8.004 3 8.625 3h6.75c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 0 1 7.5 19.875V4.125Z" clip-rule="evenodd" /></svg> Phone</h3>
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#FFD54F"
+                class="contact-icon"
+                ><path
+                  d="M10.5 18.75a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"
+                ></path><path
+                  fill-rule="evenodd"
+                  d="M8.625.75A3.375 3.375 0 0 0 5.25 4.125v15.75a3.375 3.375 0 0 0 3.375 3.375h6.75a3.375 3.375 0 0 0 3.375-3.375V4.125A3.375 3.375 0 0 0 15.375.75h-6.75ZM7.5 4.125C7.5 3.504 8.004 3 8.625 3h6.75c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-6.75A1.125 1.125 0 0 1 7.5 19.875V4.125Z"
+                  clip-rule="evenodd"></path></svg
+              > Phone
+            </h3>
             <p>(503) 555-BREW</p>
           </div>
-          
+
           <div class="contact-item">
-            <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFD54F" class="contact-icon"><path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" /><path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" /></svg> Email</h3>
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#FFD54F"
+                class="contact-icon"
+                ><path
+                  d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"
+                ></path><path
+                  d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"
+                ></path></svg
+              > Email
+            </h3>
             <p>hello@blacklodgebrews.com</p>
           </div>
-          
+
           <div class="contact-item">
-            <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFD54F" class="contact-icon"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" /></svg> Hours</h3>
-            <p>Monday - Thursday: 4pm - 10pm<br>
-               Friday - Saturday: 2pm - 12am<br>
-               Sunday: 2pm - 9pm</p>
+            <h3>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#FFD54F"
+                class="contact-icon"
+                ><path
+                  fill-rule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                  clip-rule="evenodd"></path></svg
+              > Hours
+            </h3>
+            <p>
+              Monday - Thursday: 4pm - 10pm<br />
+              Friday - Saturday: 2pm - 12am<br />
+              Sunday: 2pm - 9pm
+            </p>
           </div>
         </div>
-        
+
         <div class="map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11179.794472859286!2d-122.69833!3d45.52306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x549509fc2302c4ad%3A0x23b6b67b7be6d6d1!2sPearl%20District%2C%20Portland%2C%20OR!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
@@ -239,7 +345,8 @@ const events = [
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Black Lodge Brews Location - Portland, OR">
+            title="Black Lodge Brews Location - Portland, OR"
+          >
           </iframe>
         </div>
       </div>
@@ -248,8 +355,8 @@ const events = [
 </BaseLayout>
 
 <style lang="scss">
-  @import '../styles/global.scss';
-  @import '../styles/home-page';
+  @import "../styles/global.scss";
+  @import "../styles/home-page";
 </style>
 
 <script>
@@ -260,40 +367,75 @@ const events = [
       this.animatedCards = new Set();
       this.init();
     }
-    
+
     init() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !this.animatedCards.has(entry.target)) {
-            // Add staggered delay for multiple cards
-            const parent = entry.target.parentElement;
-            const delay = parent ? Array.from(parent.children).indexOf(entry.target) * 150 : 0;
-            
-            setTimeout(() => {
-              entry.target.classList.add('gooey-animate');
-              this.animatedCards.add(entry.target);
-            }, delay);
-          }
-        });
-      }, {
-        threshold: 0.3,
-        rootMargin: '0px 0px -50px 0px'
-      });
-      
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !this.animatedCards.has(entry.target)) {
+              // Add staggered delay for multiple cards
+              const parent = entry.target.parentElement;
+              const delay = parent
+                ? Array.from(parent.children).indexOf(entry.target) * 150
+                : 0;
+
+              setTimeout(() => {
+                entry.target.classList.add("gooey-animate");
+                this.animatedCards.add(entry.target);
+              }, delay);
+            }
+          });
+        },
+        {
+          threshold: 0.3,
+          rootMargin: "0px 0px -50px 0px",
+        }
+      );
+
       // Observe all gooey cards
-      document.querySelectorAll('.gooey-card').forEach(card => {
+      document.querySelectorAll(".gooey-card").forEach((card) => {
         observer.observe(card);
       });
     }
   }
-  
+
   // Initialize when DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     new GooeyCardAnimator();
   });
-  
+
   // Re-initialize on Astro page transitions
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     new GooeyCardAnimator();
   });
+
+  // Beer level filling animation
+  class SectionFillAnimation {
+    constructor() {
+      this.fillingSection = document.querySelector(".filling-section");
+      this.isAnimating = false;
+
+      if (this.fillingSection) {
+        // Start filling animation after 2 seconds
+        setTimeout(() => {
+          this.startFilling();
+        }, 2000);
+      }
+    }
+
+    startFilling() {
+      if (this.isAnimating) return;
+
+      this.isAnimating = true;
+      this.fillingSection.classList.add("filling");
+
+      // Add filled class after animation completes
+      setTimeout(() => {
+        this.fillingSection.classList.add("filled");
+      }, 4000);
+    }
+  }
+
+  // Initialize section fill animation
+  new SectionFillAnimation();
 </script>

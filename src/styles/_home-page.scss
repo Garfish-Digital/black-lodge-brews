@@ -4,11 +4,73 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background: linear-gradient(135deg, $roasted-malt 0%, $primary-brown 50%, $dark-forest 100%);
   position: relative;
   overflow: hidden;
   padding-top: 0;
+
+  // Beer level container for section filling effect
+  .beer-level-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    
+    .beer-level {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 0%;
+      transition: height 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 2;
+      
+      .beer-liquid {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: linear-gradient(to top, 
+          rgba(255, 160, 0, 0.5) 0%, 
+          rgba(255, 213, 79, 0.35) 100%
+        );
+        backdrop-filter: blur(1px);
+      }
+      
+      .beer-foam {
+        position: absolute;
+        top: -60px;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: linear-gradient(to bottom, 
+          rgba(255, 255, 255, 0.6) 0%, 
+          rgba(255, 255, 255, 0.25) 50%,
+          transparent 100%
+        );
+        border-radius: 50px 50px 0 0;
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 1.5s ease 3s, transform 2.5s ease 2.5s;
+      }
+    }
+  }
+
+  // Animation states
+  &.filling .beer-level {
+    height: 25% !important;
+  }
+
+  &.filling .beer-foam,
+  &.filled .beer-foam {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
   
   .hero-content {
     display: grid;
@@ -16,22 +78,27 @@
     gap: $spacing-xxl;
     align-items: center;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0;
     padding: 0 $spacing-lg;
+    align-self: flex-start;
+    margin-top: 15vh;
   }
   
   .hero-text {
+    justify-self: start;
+    
     .hero-title {
-      font-family: 'Oswald', sans-serif;
+    //   font-family: 'Oswald', sans-serif;
+      font-family: $font-display;
       font-weight: 700;
-      font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+      font-size: clamp(3.5rem, 6vw, 5rem);
       margin-bottom: calc($spacing-md * 0.75);
       background: linear-gradient(45deg, $amber-gold, #FFD54F);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 0.5px;
-      line-height: 1.1;
+      letter-spacing: 2px;
+      line-height: .95;
       padding-bottom: 0.1em;
     }
     
@@ -377,26 +444,40 @@
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   
   &.gooey-animate {
-    animation: gooey-morph 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: gooey-morph 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 }
 
 @keyframes gooey-morph {
   0% {
-    transform: scale(0.8) scaleY(1.2);
-    filter: url(#gooey-effect) blur(2px);
+    transform: scale(0.98) scaleY(1.01);
+    filter: url(#gooey-effect) blur(2px) brightness(0.9);
+    opacity: 0.7;
   }
-  30% {
-    transform: scale(1.05) scaleY(0.9);
-    filter: url(#gooey-effect) blur(1px);
+  20% {
+    transform: scale(1.005) scaleY(0.999);
+    filter: url(#gooey-effect) blur(1.5px) brightness(1.1);
+    opacity: 0.85;
+  }
+  40% {
+    transform: scale(0.999) scaleY(1.001);
+    filter: url(#gooey-effect) blur(1px) brightness(1.05);
+    opacity: 0.95;
   }
   60% {
-    transform: scale(0.98) scaleY(1.05);
-    filter: url(#gooey-effect) blur(0.5px);
+    transform: scale(1.001) scaleY(0.9995);
+    filter: url(#gooey-effect) blur(0.8px) brightness(1.02);
+    opacity: 0.98;
+  }
+  80% {
+    transform: scale(1) scaleY(1);
+    filter: url(#gooey-effect) blur(0.3px) brightness(1.01);
+    opacity: 0.99;
   }
   100% {
     transform: scale(1) scaleY(1);
-    filter: url(#gooey-effect) blur(0px);
+    filter: url(#gooey-effect) blur(0px) brightness(1);
+    opacity: 1;
   }
 }
 
