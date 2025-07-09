@@ -74,17 +74,24 @@ const {
       this.canvas.height = rect.height;
     }
     
+    getWeightedOpacity() {
+      // Returns 0.3 opacity 75% of the time, 0.7 opacity 25% of the time
+      return Math.random() < 0.9 ? 0.3 : 0.9;
+    }
+    
     createParticles() {
       this.particles = [];
       
       for (let i = 0; i < this.particleCount; i++) {
+        const baseOpacity = this.getWeightedOpacity();
         this.particles.push({
           x: Math.random() * this.canvas.width,
           y: this.canvas.height * 0.5 + Math.random() * (this.canvas.height * 0.5),
           vx: (Math.random() - 0.5) * this.speed * 0.5,
           vy: (Math.random() - 0.5) * this.speed,
           size: Math.random() * this.size + 1,
-          opacity: Math.random() * this.opacity,
+          opacity: baseOpacity,
+          baseOpacity: baseOpacity, // Store the base opacity for fade calculations
           life: Math.random() * 100,
           maxLife: 100 + Math.random() * 50
         });
@@ -96,14 +103,14 @@ const {
       particle.y += particle.vy;
       particle.life++;
       
-      // Fade in and out
+      // Fade in and out using the particle's base opacity
       const lifeRatio = particle.life / particle.maxLife;
       if (lifeRatio < 0.1) {
-        particle.opacity = (lifeRatio / 0.1) * this.opacity;
+        particle.opacity = (lifeRatio / 0.1) * particle.baseOpacity;
       } else if (lifeRatio > 0.9) {
-        particle.opacity = (1 - (lifeRatio - 0.9) / 0.1) * this.opacity;
+        particle.opacity = (1 - (lifeRatio - 0.9) / 0.1) * particle.baseOpacity;
       } else {
-        particle.opacity = this.opacity;
+        particle.opacity = particle.baseOpacity;
       }
       
       // Reset particle if it goes off screen or dies
@@ -117,6 +124,9 @@ const {
         particle.vy = (Math.random() - 0.5) * this.speed;
         particle.life = 0;
         particle.maxLife = 100 + Math.random() * 50;
+        // Assign new weighted opacity when particle resets
+        particle.baseOpacity = this.getWeightedOpacity();
+        particle.opacity = particle.baseOpacity;
       }
       
       // Add some drift

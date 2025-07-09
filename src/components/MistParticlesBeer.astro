@@ -106,9 +106,9 @@ const {
       }
       
       // Reset particle if it goes off screen or dies
-      if (particle.y < -particle.size || 
-          particle.x < -particle.size || 
+      if (particle.x < -particle.size || 
           particle.x > this.canvas.width + particle.size ||
+          particle.y > this.canvas.height + particle.size ||  // Kill at bottom
           particle.life > particle.maxLife) {
         particle.x = Math.random() * this.canvas.width;
         particle.y = this.canvas.height + particle.size + Math.random() * 50;

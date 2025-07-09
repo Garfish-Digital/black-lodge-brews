@@ -29,6 +29,7 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
   <div class="liquid-page-transition" id="pageTransition"></div>
   
   <nav class="vertical-navbar">
+    <a href="#lodge" class="nav-link">Lodge</a>
     <a href="#taps" class="nav-link">Tap List</a>
     <a href="#story" class="nav-link">Our Story</a>
     <a href="#taproom" class="nav-link">Taproom</a>
@@ -69,7 +70,7 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
     // Navigation active state management
     class NavigationManager {
       constructor() {
-        this.sections = ['taps', 'story', 'taproom', 'contact'];
+        this.sections = ['lodge', 'taps', 'story', 'taproom', 'contact'];
         this.links = {};
         this.currentActive = null;
         this.init();
@@ -144,9 +145,9 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
           }
         });
 
-        // Default to first section if near top of page
+        // Default to lodge (home) section if near top of page
         if (!activeSection && window.scrollY < 200) {
-          activeSection = this.sections[0];
+          activeSection = 'lodge';
         }
 
         // Update active link if changed

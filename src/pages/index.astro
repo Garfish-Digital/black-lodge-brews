@@ -4,8 +4,6 @@ import LiquidTransition from "../components/LiquidTransition.astro";
 import BeerCard from "../components/BeerCard.astro";
 import MistParticlesBeer from "../components/MistParticlesBeer.astro";
 import MistParticlesFireflies from "../components/MistParticlesFireflies.astro";
-// import PourAnimation from '../components/PourAnimation.astro';
-// import lodgeImage from '../assets/images/istockphoto-1762132433-1024x1024.jpg';
 
 const beers = [
   {
@@ -94,22 +92,33 @@ const events = [
   title="Black Lodge Brews - Premium Craft Brewery"
   description="Enter the mysterious world of Black Lodge Brews, where every sip tells a story and every brew holds secrets waiting to be discovered."
 >
-  <!-- SVG Filters for Gooey Effect -->
+  <!-- Advanced Liquid Clustering Effects -->
   <svg width="0" height="0" style="position: absolute;">
     <defs>
-      <filter id="gooey-effect">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="8"></feGaussianBlur>
-        <feColorMatrix
-          in="blur"
-          mode="matrix"
-          values="
-          1 0 0 0 0  
-          0 1 0 0 0  
-          0 0 1 0 0  
-          0 0 0 20 -10"
-        ></feColorMatrix>
-        <feComposite in="SourceGraphic" in2="colormatrix" operator="over"
-        ></feComposite>
+      <!-- Liquid clustering filter -->
+      <filter id="liquid-cluster" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -12" result="threshold"/>
+        <feFlood flood-color="#FFA000" flood-opacity="0.8" result="color"/>
+        <feComposite in="color" in2="threshold" operator="in" result="liquid"/>
+        <feGaussianBlur in="liquid" stdDeviation="8" result="liquid-blur"/>
+        <feComposite in="SourceGraphic" in2="liquid-blur" operator="over"/>
+      </filter>
+      
+      <!-- Enhanced gooey morphing -->
+      <filter id="enhanced-gooey" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="matrix"/>
+        <feComposite in="SourceGraphic" in2="matrix" operator="over"/>
+      </filter>
+      
+      <!-- Liquid drop effect -->
+      <filter id="liquid-drop" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6" result="matrix"/>
+        <feFlood flood-color="#FFD54F" flood-opacity="0.6" result="highlight"/>
+        <feComposite in="highlight" in2="matrix" operator="in" result="liquid-highlight"/>
+        <feComposite in="SourceGraphic" in2="liquid-highlight" operator="over"/>
       </filter>
     </defs>
   </svg>
@@ -117,7 +126,7 @@ const events = [
   <LiquidTransition direction="up" duration={0.8} color="#FFA000" />
 
   <!-- Hero Section -->
-  <section class="hero section filling-section">
+  <section class="hero section filling-section" id="lodge">
     <div class="hero-content">
       <div class="hero-text">
         <h1 class="hero-title">Black<br /> Lodge<br /> Brews</h1>
@@ -184,14 +193,6 @@ const events = [
             shadow holds a secret.
           </p>
         </div>
-        <!-- <div class="story-visual">
-          <div class="story-image">
-            <img src={lodgeImage.src} alt="The Black Lodge - A rustic cabin nestled in the Pacific Northwest forest" />
-            <div class="image-caption">
-              <p>The Lodge at Dawn</p>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
     <MistParticlesFireflies
@@ -214,45 +215,49 @@ const events = [
       <div class="taproom-content">
         <div class="taproom-description">
           <h3>Immerse Yourself</h3>
-          <div class="taproom-features">
-            <div class="feature gooey-card">
-              <h4>🍺 Fresh Pours</h4>
-              <p>
-                All our beers are served at the perfect temperature from our
-                custom tap system
-              </p>
-            </div>
-            <div class="feature gooey-card">
-              <h4>🎵 Live Music</h4>
-              <p>
-                Regular performances featuring local jazz groups, folk singers,
-                and ambient artists
-              </p>
-            </div>
-            <div class="feature gooey-card">
-              <h4>🥨 Artisan Bites</h4>
-              <p>
-                Carefully selected food pairings, sweet and savory, that
-                complement our unique brews
-              </p>
+          <div class="liquid-cluster-container">
+            <div class="taproom-features">
+              <div class="feature liquid-card">
+                <h4>🍺 Fresh Pours</h4>
+                <p>
+                  All our beers are served at the perfect temperature from our
+                  custom tap system
+                </p>
+              </div>
+              <div class="feature liquid-card">
+                <h4>🎵 Live Music</h4>
+                <p>
+                  Regular performances featuring local jazz groups, folk singers,
+                  and ambient artists
+                </p>
+              </div>
+              <div class="feature liquid-card">
+                <h4>🥨 Artisan Bites</h4>
+                <p>
+                  Carefully selected food pairings, sweet and savory, that
+                  complement our unique brews
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="events-calendar">
           <h3>Upcoming Events</h3>
-          <div class="events-list">
-            {
-              events.map((event) => (
-                <div class="event-item gooey-card">
-                  <div class="event-date">{event.date}</div>
-                  <div class="event-details">
-                    <h4>{event.title}</h4>
-                    <p>{event.description}</p>
+          <div class="liquid-drop-container">
+            <div class="events-list">
+              {
+                events.map((event) => (
+                  <div class="event-item liquid-drop-card">
+                    <div class="event-date">{event.date}</div>
+                    <div class="event-details">
+                      <h4>{event.title}</h4>
+                      <p>{event.description}</p>
+                    </div>
                   </div>
-                </div>
-              ))
-            }
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -301,23 +306,6 @@ const events = [
             <p>(503) 555-BREW</p>
           </div>
 
-          <!-- <div class="contact-item">
-            <h3>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="#FFD54F"
-                class="contact-icon"
-                ><path
-                  d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"
-                ></path><path
-                  d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"
-                ></path></svg
-              > Email
-            </h3>
-            <p>hello@blacklodgebrews.com</p>
-          </div> -->
-
           <div class="contact-item">
             <h3>
               <svg
@@ -360,6 +348,12 @@ const events = [
 <style lang="scss">
   @import "../styles/global.scss";
   @import "../styles/home-page";
+  
+  // Custom particle canvas sizing - extend both up and down for maximum coverage
+  .hero .mist-container-beer {
+    height: 150%;
+    top: -25%;
+  }
 </style>
 
 <script>
@@ -370,8 +364,8 @@ const events = [
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
 
-  // Gooey card animation on scroll
-  class GooeyCardAnimator {
+  // Liquid card animation on scroll
+  class LiquidCardAnimator {
     animatedCards;
     constructor() {
       this.animatedCards = new Set();
@@ -386,37 +380,94 @@ const events = [
               // Add staggered delay for multiple cards
               const parent = entry.target.parentElement;
               const delay = parent
-                ? Array.from(parent.children).indexOf(entry.target) * 150
+                ? Array.from(parent.children).indexOf(entry.target) * 200
                 : 0;
 
               setTimeout(() => {
-                entry.target.classList.add("gooey-animate");
+                entry.target.classList.add("liquid-animate");
                 this.animatedCards.add(entry.target);
               }, delay);
             }
           });
         },
         {
-          threshold: 0.3,
-          rootMargin: "0px 0px -50px 0px",
+          threshold: 0.2,
+          rootMargin: "0px 0px -30px 0px",
         }
       );
 
-      // Observe all gooey cards
-      document.querySelectorAll(".gooey-card").forEach((card) => {
+      // Observe all liquid cards
+      document.querySelectorAll(".liquid-card, .liquid-drop-card").forEach((card) => {
         observer.observe(card);
+      });
+    }
+  }
+
+  // Enhanced liquid interaction effects
+  class LiquidInteractionEffects {
+    constructor() {
+      this.setupHoverEffects();
+      this.setupProximityEffects();
+    }
+    
+    setupHoverEffects() {
+      // Add enhanced hover effects for liquid cards
+      document.querySelectorAll('.liquid-card, .liquid-drop-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          // Add ripple effect on hover
+          const ripple = document.createElement('div');
+          ripple.className = 'liquid-ripple';
+          card.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 1000);
+        });
+      });
+    }
+    
+    setupProximityEffects() {
+      // Create proximity-based liquid clustering
+      const containers = document.querySelectorAll('.liquid-cluster-container, .liquid-drop-container');
+      
+      containers.forEach(container => {
+        const cards = container.querySelectorAll('.liquid-card, .liquid-drop-card');
+        
+        cards.forEach((card, index) => {
+          card.addEventListener('mouseenter', () => {
+            // Enhance nearby cards when one is hovered
+            cards.forEach((otherCard, otherIndex) => {
+              if (Math.abs(index - otherIndex) <= 1 && card !== otherCard) {
+                otherCard.style.transform = 'scale(1.02) translateY(-2px)';
+                otherCard.style.filter = 'brightness(1.1)';
+              }
+            });
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            // Reset nearby cards
+            cards.forEach(otherCard => {
+              if (card !== otherCard) {
+                otherCard.style.transform = '';
+                otherCard.style.filter = '';
+              }
+            });
+          });
+        });
       });
     }
   }
 
   // Initialize when DOM is loaded
   document.addEventListener("DOMContentLoaded", () => {
-    new GooeyCardAnimator();
+    new LiquidCardAnimator();
+    new LiquidInteractionEffects();
   });
 
   // Re-initialize on Astro page transitions
   document.addEventListener("astro:page-load", () => {
-    new GooeyCardAnimator();
+    new LiquidCardAnimator();
+    new LiquidInteractionEffects();
   });
 
   // Beer level filling animation
