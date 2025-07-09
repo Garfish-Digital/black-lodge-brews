@@ -43,6 +43,19 @@
   }
 }
 
+// Foam height animation
+@keyframes foamHeight {
+  0% {
+    height: 0%;
+  }
+  50% {
+    height: 20px;
+  }
+  100% {
+    height: 50px;
+  }
+}
+
 // Ripple Effect
 @keyframes ripple {
   0% {

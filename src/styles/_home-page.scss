@@ -44,10 +44,10 @@
       
       .beer-foam {
         position: absolute;
-        top: -60px;
+        top: -50px;
         left: 0;
         right: 0;
-        height: 60px;
+        height: 50px;
         background: linear-gradient(to bottom, 
           rgba(255, 255, 255, 0.6) 0%, 
           rgba(255, 255, 255, 0.25) 50%,
@@ -55,8 +55,10 @@
         );
         border-radius: 50px 50px 0 0;
         opacity: 0;
-        transform: translateY(60px);
+        transform: translateY(50px);
         transition: opacity 1.5s ease 3s, transform 2.5s ease 2.5s;
+                animation: foamHeight 2s ease-in-out 3s forwards;
+
       }
     }
   }
@@ -152,14 +154,8 @@
 }
 
 .story-section {
-  background: $dark-forest;
-  background-image: 
-    linear-gradient(rgba(27, 58, 27, 0.85), rgba(26, 14, 10, 0.9)),
-    url('/images/istockphoto-923623146-1024x1024.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
   position: relative;
+  overflow: hidden;
   
   .story-content {
     display: grid;
@@ -322,15 +318,8 @@
 }
 
 .contact-section {
-  background: $dark-forest;
-  background-image: 
-    linear-gradient(rgba(26, 14, 10, 0.8), rgba(62, 39, 35, 0.85)),
-    url('/images/istockphoto-1393310438-1024x1024.jpg');
-  background-size: 150%;
-
-  background-position: calc(50% - 20vw) center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  position: relative;
+  overflow: hidden;
   
   .section-title {
     text-align: center;
@@ -435,6 +424,36 @@
     grid-template-columns: 1fr !important;
     gap: $spacing-xl;
   }
+}
+
+// Parallax Background Elements
+.parallax-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 150%; // Larger for parallax effect coverage
+  z-index: -1;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.story-bg {
+  background-image: 
+    linear-gradient(rgba(27, 58, 27, 0.85), rgba(26, 14, 10, 0.9)),
+    url('/images/iStock-923623146.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.contact-bg {
+  background-image: 
+    linear-gradient(rgba(26, 14, 10, 0.8), rgba(62, 39, 35, 0.85)),
+    url('/images/iStock-1393310438.jpg');
+  background-size: 150%;
+  background-position: calc(50% - 20vw) center;
+  background-repeat: no-repeat;
 }
 
 // Gooey effect styles

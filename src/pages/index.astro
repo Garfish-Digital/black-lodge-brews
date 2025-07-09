@@ -2,7 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LiquidTransition from "../components/LiquidTransition.astro";
 import BeerCard from "../components/BeerCard.astro";
-import MistParticles from "../components/MistParticles.astro";
+import MistParticlesBeer from "../components/MistParticlesBeer.astro";
+import MistParticlesFireflies from "../components/MistParticlesFireflies.astro";
 // import PourAnimation from '../components/PourAnimation.astro';
 // import lodgeImage from '../assets/images/istockphoto-1762132433-1024x1024.jpg';
 
@@ -13,7 +14,7 @@ const beers = [
     abv: 6.8,
     ibu: 65,
     description:
-      "A mysterious blend of citrus and pine with a dark, smoky finish that lingers like secrets in the night.",
+      "A secret blend of citrus and pine with a dark, smoky finish that lingers like whispers in the night.",
     color: "#D2691E",
     available: true,
   },
@@ -23,7 +24,7 @@ const beers = [
     abv: 5.4,
     ibu: 35,
     description:
-      "Rich chocolate and coffee notes with a velvety smooth texture. Perfect for contemplating life's mysteries.",
+      "Rich chocolate and coffee notes with a smooth texture. Perfect for contemplating life's mysteries.",
     color: "#2F1B14",
     available: true,
   },
@@ -43,7 +44,7 @@ const beers = [
     abv: 5.9,
     ibu: 40,
     description:
-      "A bold red ale with caramel backbone and mysterious floral notes that dance on the palate.",
+      "A bold red ale with caramel backbone and curious floral notes that dance on the palate.",
     color: "#A0522D",
     available: false,
   },
@@ -129,7 +130,7 @@ const events = [
         <div class="beer-foam"></div>
       </div>
     </div>
-    <MistParticles
+    <MistParticlesBeer
       particleCount={40}
       color="#FFFFFF"
       size={3}
@@ -154,6 +155,7 @@ const events = [
 
   <!-- Our Story Section -->
   <section id="story" class="section story-section">
+    <div class="parallax-bg story-bg" data-speed="0.5"></div>
     <div class="container">
       <div class="story-content">
         <div class="story-text">
@@ -169,13 +171,13 @@ const events = [
           <p>
             Our brewing process is as much art as it is science. We source our
             ingredients from local farms that have been tended by generations of
-            families who understand the land's secrets. Each batch is carefully
+            families who understand the land's perplexities. Each batch is carefully
             crafted in small quantities, ensuring that every glass carries the
-            essence of our mysterious heritage.
+            essence of our mystic heritage.
           </p>
 
           <p>
-            The lodge itself stands as a testament to craftsmanship and mystery.
+            The lodge itself stands as a testament to craftsmanship.
             Built from reclaimed timber and stone, it houses our
             state-of-the-art brewing equipment alongside relics and curiosities
             collected from around the world. Every corner tells a story, every
@@ -192,11 +194,11 @@ const events = [
         </div> -->
       </div>
     </div>
-    <MistParticles
+    <MistParticlesFireflies
       particleCount={10}
       color="#FFA000"
       size={1}
-      speed={0.15}
+      speed={0.05}
       opacity={0.3}
     />
   </section>
@@ -259,6 +261,7 @@ const events = [
 
   <!-- Contact Section -->
   <section id="contact" class="section contact-section">
+    <div class="parallax-bg contact-bg" data-speed="0.3"></div>
     <div class="container">
       <h2 class="section-title">Find Your Way to the Lodge</h2>
 
@@ -298,7 +301,7 @@ const events = [
             <p>(503) 555-BREW</p>
           </div>
 
-          <div class="contact-item">
+          <!-- <div class="contact-item">
             <h3>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +316,7 @@ const events = [
               > Email
             </h3>
             <p>hello@blacklodgebrews.com</p>
-          </div>
+          </div> -->
 
           <div class="contact-item">
             <h3>
@@ -360,6 +363,13 @@ const events = [
 </style>
 
 <script>
+  // GSAP ScrollTrigger Parallax Implementation
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger);
+
   // Gooey card animation on scroll
   class GooeyCardAnimator {
     animatedCards;
@@ -438,4 +448,58 @@ const events = [
 
   // Initialize section fill animation
   new SectionFillAnimation();
+
+  // Professional parallax implementation
+  class GSAPParallaxController {
+    constructor() {
+      this.initParallax();
+    }
+
+    initParallax() {
+      // Wait for DOM to be fully loaded
+      gsap.set('.parallax-bg', { transformOrigin: 'center center' });
+
+      // Story section parallax
+      gsap.to('.story-bg', {
+        y: '-30%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.story-section',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1, // Smooth scrubbing
+          invalidateOnRefresh: true,
+        }
+      });
+
+      // Contact section parallax with different speed
+      gsap.to('.contact-bg', {
+        y: '-20%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.contact-section',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.2, // Slightly different scrub for variation
+          invalidateOnRefresh: true,
+        }
+      });
+
+      // Refresh ScrollTrigger on window resize
+      window.addEventListener('resize', () => {
+        ScrollTrigger.refresh();
+      });
+    }
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new GSAPParallaxController();
+  });
+
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', () => {
+    new GSAPParallaxController();
+  });
+
 </script>
