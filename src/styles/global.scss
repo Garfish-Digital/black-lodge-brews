@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
 @import 'variables';
-@import 'liquid-effects';
 
 * {
   margin: 0;
@@ -150,7 +149,7 @@ a {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(7px);
   }
   to {
     opacity: 1;

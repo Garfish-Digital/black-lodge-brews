@@ -70,6 +70,11 @@ const beers = [
 
 const events = [
   {
+    date: "July 4",
+    title: "Independence Day Celebration",
+    description: "Celebrating with an explosive brew that proudly stands on its own",
+  },
+  {
     date: "July 15",
     title: "Mystery Beer Release",
     description: "Unveiling our latest creation - a beer shrouded in mystery",
@@ -92,36 +97,6 @@ const events = [
   title="Black Lodge Brews - Premium Craft Brewery"
   description="Enter the mysterious world of Black Lodge Brews, where every sip tells a story and every brew holds secrets waiting to be discovered."
 >
-  <!-- Advanced Liquid Clustering Effects -->
-  <svg width="0" height="0" style="position: absolute;">
-    <defs>
-      <!-- Liquid clustering filter -->
-      <filter id="liquid-cluster" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur"/>
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 25 -12" result="threshold"/>
-        <feFlood flood-color="#FFA000" flood-opacity="0.8" result="color"/>
-        <feComposite in="color" in2="threshold" operator="in" result="liquid"/>
-        <feGaussianBlur in="liquid" stdDeviation="8" result="liquid-blur"/>
-        <feComposite in="SourceGraphic" in2="liquid-blur" operator="over"/>
-      </filter>
-      
-      <!-- Enhanced gooey morphing -->
-      <filter id="enhanced-gooey" x="-30%" y="-30%" width="160%" height="160%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="matrix"/>
-        <feComposite in="SourceGraphic" in2="matrix" operator="over"/>
-      </filter>
-      
-      <!-- Liquid drop effect -->
-      <filter id="liquid-drop" x="-40%" y="-40%" width="180%" height="180%">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
-        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 15 -6" result="matrix"/>
-        <feFlood flood-color="#FFD54F" flood-opacity="0.6" result="highlight"/>
-        <feComposite in="highlight" in2="matrix" operator="in" result="liquid-highlight"/>
-        <feComposite in="SourceGraphic" in2="liquid-highlight" operator="over"/>
-      </filter>
-    </defs>
-  </svg>
 
   <LiquidTransition direction="up" duration={0.8} color="#FFA000" />
 
@@ -215,41 +190,41 @@ const events = [
       <div class="taproom-content">
         <div class="taproom-description">
           <h3>Immerse Yourself</h3>
-          <div class="liquid-cluster-container">
-            <div class="taproom-features">
-              <div class="feature liquid-card">
+          <div class="taproom-features">
+              <div class="feature blob-content">
                 <h4>🍺 Fresh Pours</h4>
                 <p>
                   All our beers are served at the perfect temperature from our
                   custom tap system
                 </p>
+                <!-- <canvas class="ripple-canvas"></canvas> -->
               </div>
-              <div class="feature liquid-card">
+              <div class="feature blob-content">
                 <h4>🎵 Live Music</h4>
                 <p>
                   Regular performances featuring local jazz groups, folk singers,
                   and ambient artists
                 </p>
+                <!-- <canvas class="ripple-canvas"></canvas> -->
               </div>
-              <div class="feature liquid-card">
+              <div class="feature blob-content">
                 <h4>🥨 Artisan Bites</h4>
                 <p>
                   Carefully selected food pairings, sweet and savory, that
                   complement our unique brews
                 </p>
+                <!-- <canvas class="ripple-canvas"></canvas> -->
               </div>
             </div>
-          </div>
         </div>
 
         <div class="events-calendar">
           <h3>Upcoming Events</h3>
-          <div class="liquid-drop-container">
-            <div class="events-list">
+          <div class="events-list">
               {
-                events.map((event) => (
-                  <div class="event-item liquid-drop-card">
-                    <div class="event-date">{event.date}</div>
+                events.map((event, idx) => (
+                  <div class="event-item">
+                    <div class={`event-date watery-blob-container blob-${idx}`}><span>{event.date}</span></div>
                     <div class="event-details">
                       <h4>{event.title}</h4>
                       <p>{event.description}</p>
@@ -258,7 +233,6 @@ const events = [
                 ))
               }
             </div>
-          </div>
         </div>
       </div>
     </div>
@@ -330,9 +304,9 @@ const events = [
         <div class="map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11179.794472859286!2d-122.69833!3d45.52306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x549509fc2302c4ad%3A0x23b6b67b7be6d6d1!2sPearl%20District%2C%20Portland%2C%20OR!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-            width="100%"
-            height="400"
-            style="border:0; border-radius: 16px;"
+            width="70%"
+            height="300"
+            style="border:0; border-radius: 16px; margin-top: 50px;"
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
@@ -364,9 +338,9 @@ const events = [
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
 
-  // Liquid card animation on scroll
-  class LiquidCardAnimator {
-    animatedCards;
+  // Card animation on scroll
+  class CardAnimator {
+    private animatedCards: Set<Element>;
     constructor() {
       this.animatedCards = new Set();
       this.init();
@@ -380,11 +354,11 @@ const events = [
               // Add staggered delay for multiple cards
               const parent = entry.target.parentElement;
               const delay = parent
-                ? Array.from(parent.children).indexOf(entry.target) * 200
+                ? Array.from(parent.children).indexOf(entry.target) * 150
                 : 0;
 
               setTimeout(() => {
-                entry.target.classList.add("liquid-animate");
+                entry.target.classList.add("fade-in-up");
                 this.animatedCards.add(entry.target);
               }, delay);
             }
@@ -396,82 +370,247 @@ const events = [
         }
       );
 
-      // Observe all liquid cards
-      document.querySelectorAll(".liquid-card, .liquid-drop-card").forEach((card) => {
+      // Observe all feature and event cards
+      document.querySelectorAll(".feature, .event-item").forEach((card) => {
         observer.observe(card);
       });
     }
   }
 
-  // Enhanced liquid interaction effects
-  class LiquidInteractionEffects {
-    constructor() {
-      this.setupHoverEffects();
-      this.setupProximityEffects();
-    }
-    
-    setupHoverEffects() {
-      // Add enhanced hover effects for liquid cards
-      document.querySelectorAll('.liquid-card, .liquid-drop-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          // Add ripple effect on hover
-          const ripple = document.createElement('div');
-          ripple.className = 'liquid-ripple';
-          card.appendChild(ripple);
-          
-          setTimeout(() => {
-            ripple.remove();
-          }, 1000);
-        });
-      });
-    }
-    
-    setupProximityEffects() {
-      // Create proximity-based liquid clustering
-      const containers = document.querySelectorAll('.liquid-cluster-container, .liquid-drop-container');
+
+  // Three.js WebGL Ripple Effect for Feature Cards
+  class RippleEffect {
+    private card: HTMLElement;
+    private canvas: HTMLCanvasElement;
+    private scene: any;
+    private camera: any;
+    private renderer: any;
+    private planeMesh: any;
+    private rippleMaterial: any;
+    private isRippleActive: boolean;
+    private rippleStartTime: number;
+    private rippleDuration: number;
+    private animationFrameId: number | null;
+
+    constructor(cardElement: HTMLElement) {
+      this.card = cardElement;
+      this.canvas = cardElement.querySelector('.ripple-canvas') as HTMLCanvasElement;
+      this.scene = null;
+      this.camera = null;
+      this.renderer = null;
+      this.planeMesh = null;
+      this.rippleMaterial = null;
+      this.isRippleActive = false;
+      this.rippleStartTime = 0;
+      this.rippleDuration = 1000;
+      this.animationFrameId = null;
       
-      containers.forEach(container => {
-        const cards = container.querySelectorAll('.liquid-card, .liquid-drop-card');
-        
-        cards.forEach((card, index) => {
-          card.addEventListener('mouseenter', () => {
-            // Enhance nearby cards when one is hovered
-            cards.forEach((otherCard, otherIndex) => {
-              if (Math.abs(index - otherIndex) <= 1 && card !== otherCard) {
-                otherCard.style.transform = 'scale(1.02) translateY(-2px)';
-                otherCard.style.filter = 'brightness(1.1)';
-              }
-            });
-          });
-          
-          card.addEventListener('mouseleave', () => {
-            // Reset nearby cards
-            cards.forEach(otherCard => {
-              if (card !== otherCard) {
-                otherCard.style.transform = '';
-                otherCard.style.filter = '';
-              }
-            });
-          });
-        });
+      console.log('RippleEffect constructor called for card:', this.card);
+      console.log('Canvas found:', this.canvas);
+      
+      this.init();
+    }
+    
+    init() {
+      // Libraries should be available since they're loaded in the head
+      console.log('Initializing ripple effect...');
+      console.log('THREE available:', typeof (window as any).THREE);
+      console.log('html2canvas available:', typeof (window as any).html2canvas);
+      
+      if (typeof (window as any).THREE !== 'undefined' && typeof (window as any).html2canvas !== 'undefined') {
+        this.captureCardContent();
+        this.setupEventListeners();
+      } else {
+        console.error('Libraries not loaded yet, trying again in 500ms');
+        setTimeout(() => this.init(), 500);
+      }
+    }
+    
+    captureCardContent() {
+      console.log('Capturing card content...');
+      (window as any).html2canvas(this.card, {
+        useCORS: true,
+        backgroundColor: null,
+        scale: 2
+      }).then((canvas: HTMLCanvasElement) => {
+        console.log('html2canvas succeeded, creating texture...');
+        const THREE = (window as any).THREE;
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+        this.initThreeJS(texture);
+      }).catch((error: any) => {
+        console.warn('html2canvas failed, using fallback:', error);
+        const THREE = (window as any).THREE;
+        this.initThreeJS(new THREE.Color(0x3e2723));
       });
+    }
+    
+    initThreeJS(texture: any) {
+      console.log('Initializing Three.js with texture:', texture);
+      const THREE = (window as any).THREE;
+      const cardWidth = this.card.offsetWidth;
+      const cardHeight = this.card.offsetHeight;
+      const cardAspect = cardWidth / cardHeight;
+      console.log('Card dimensions:', cardWidth, 'x', cardHeight, 'aspect:', cardAspect);
+      
+      this.canvas.width = cardWidth;
+      this.canvas.height = cardHeight;
+      
+      // Scene setup
+      this.scene = new THREE.Scene();
+      this.camera = new THREE.OrthographicCamera(
+        cardWidth / -2, cardWidth / 2,
+        cardHeight / 2, cardHeight / -2,
+        1, 1000
+      );
+      this.camera.position.z = 10;
+      
+      // Renderer setup
+      this.renderer = new THREE.WebGLRenderer({
+        canvas: this.canvas,
+        alpha: true,
+        antialias: true
+      });
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setSize(cardWidth, cardHeight);
+      this.renderer.setClearColor(0x000000, 0);
+      
+      // Geometry and material
+      const geometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
+      
+      const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `;
+      
+      const fragmentShader = `
+        uniform float u_time;
+        uniform vec2 u_center;
+        uniform sampler2D u_texture;
+        uniform float u_aspect;
+        varying vec2 vUv;
+        
+        void main() {
+          vec2 uv = vUv;
+          vec2 p = uv - u_center;
+          p.x *= u_aspect;
+          
+          float dist = length(p);
+          float maxRippleRadius = 1.0;
+          float rippleEdgeSharpness = 0.06;
+          float rippleAmplitude = 0.12;
+          
+          float currentRadius = u_time * maxRippleRadius;
+          float strength = smoothstep(currentRadius - rippleEdgeSharpness, currentRadius, dist) -
+                          smoothstep(currentRadius, currentRadius + rippleEdgeSharpness, dist);
+          
+          float fadeOut = 1.0 - u_time;
+          float distortion = strength * rippleAmplitude * fadeOut;
+          
+          vec2 displacedUV = uv + normalize(p) * distortion;
+          gl_FragColor = texture2D(u_texture, displacedUV);
+        }
+      `;
+      
+      this.rippleMaterial = new THREE.ShaderMaterial({
+        uniforms: {
+          u_time: { value: 0.0 },
+          u_center: { value: new THREE.Vector2(0.5, 0.5) },
+          u_texture: { value: texture },
+          u_aspect: { value: cardAspect }
+        },
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        transparent: true
+      });
+      
+      this.planeMesh = new THREE.Mesh(geometry, this.rippleMaterial);
+      this.scene.add(this.planeMesh);
+      
+      this.renderer.render(this.scene, this.camera);
+    }
+    
+    setupEventListeners() {
+      console.log('Setting up event listeners for card:', this.card);
+      this.card.addEventListener('click', (event: MouseEvent) => {
+        console.log('Card clicked!', event);
+        if (!this.isRippleActive && this.rippleMaterial) {
+          console.log('Triggering ripple...');
+          this.triggerRipple(event);
+        } else {
+          console.log('Ripple not triggered - isRippleActive:', this.isRippleActive, 'rippleMaterial:', this.rippleMaterial);
+        }
+      });
+    }
+    
+    triggerRipple(event: MouseEvent) {
+      this.isRippleActive = true;
+      this.rippleStartTime = performance.now();
+      
+      const rect = this.card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = 1.0 - (event.clientY - rect.top) / rect.height;
+      
+      const clampedX = Math.max(0, Math.min(1, x));
+      const clampedY = Math.max(0, Math.min(1, y));
+      
+      this.rippleMaterial.uniforms.u_center.value.set(clampedX, clampedY);
+      this.canvas.style.opacity = '1';
+      
+      this.animate();
+    }
+    
+    animate() {
+      if (this.isRippleActive) {
+        const currentTime = performance.now();
+        let elapsedTime = (currentTime - this.rippleStartTime) / this.rippleDuration;
+        
+        if (elapsedTime < 1.0) {
+          this.rippleMaterial.uniforms.u_time.value = elapsedTime;
+          this.renderer.render(this.scene, this.camera);
+          this.animationFrameId = requestAnimationFrame(() => this.animate());
+        } else {
+          this.isRippleActive = false;
+          this.canvas.style.opacity = '0';
+          this.rippleMaterial.uniforms.u_time.value = 0.0;
+        }
+      }
     }
   }
 
   // Initialize when DOM is loaded
   document.addEventListener("DOMContentLoaded", () => {
-    new LiquidCardAnimator();
-    new LiquidInteractionEffects();
+    console.log('DOM loaded, initializing components...');
+    new CardAnimator();
+    
+    // Initialize ripple effects for feature cards
+    const rippleCards = document.querySelectorAll('.ripple-card');
+    console.log('Found', rippleCards.length, 'ripple cards');
+    
+    rippleCards.forEach(card => {
+      console.log('Initializing ripple effect for card:', card);
+      new RippleEffect(card as HTMLElement);
+    });
   });
 
   // Re-initialize on Astro page transitions
   document.addEventListener("astro:page-load", () => {
-    new LiquidCardAnimator();
-    new LiquidInteractionEffects();
+    new CardAnimator();
+    
+    // Initialize ripple effects for feature cards
+    document.querySelectorAll('.ripple-card').forEach(card => {
+      new RippleEffect(card as HTMLElement);
+    });
   });
 
   // Beer level filling animation
   class SectionFillAnimation {
+    private fillingSection: HTMLElement | null;
+    private isAnimating: boolean;
+
     constructor() {
       this.fillingSection = document.querySelector(".filling-section");
       this.isAnimating = false;
@@ -488,17 +627,94 @@ const events = [
       if (this.isAnimating) return;
 
       this.isAnimating = true;
-      this.fillingSection.classList.add("filling");
+      this.fillingSection!.classList.add("filling");
 
       // Add filled class after animation completes
       setTimeout(() => {
-        this.fillingSection.classList.add("filled");
+        this.fillingSection!.classList.add("filled");
       }, 4000);
     }
   }
 
   // Initialize section fill animation
   new SectionFillAnimation();
+
+  // Blob content hover removal functionality
+  class BlobContentRemover {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      // Find all feature divs with blob-content class
+      const featureElements = document.querySelectorAll('.feature.blob-content');
+      
+      featureElements.forEach(element => {
+        // Desktop: mouseenter for hover
+        element.addEventListener('mouseenter', () => {
+          element.classList.remove('blob-content');
+        });
+        
+        // Mobile: touchstart for tap/press
+        element.addEventListener('touchstart', () => {
+          element.classList.remove('blob-content');
+        }, { passive: true });
+        
+        // Alternative: click event (works on both desktop and mobile)
+        element.addEventListener('click', () => {
+          element.classList.remove('blob-content');
+        });
+      });
+    }
+  }
+
+  // Initialize blob content remover
+  new BlobContentRemover();
+
+  // Event-date blob remover functionality
+  class EventDateBlobRemover {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      // Find all event-date elements
+      const eventDateElements = document.querySelectorAll('.event-date');
+      
+      eventDateElements.forEach(element => {
+        // Desktop: mouseenter for hover
+        element.addEventListener('mouseenter', () => {
+          this.removeBlobClasses(element);
+        });
+        
+        // Mobile: touchstart for tap/press
+        element.addEventListener('touchstart', () => {
+          this.removeBlobClasses(element);
+        }, { passive: true });
+        
+        // Alternative: click event (works on both desktop and mobile)
+        element.addEventListener('click', () => {
+          this.removeBlobClasses(element);
+        });
+      });
+    }
+
+    removeBlobClasses(element) {
+      // Remove watery-blob-container class
+      element.classList.remove('watery-blob-container');
+      
+      // Remove any blob-* classes (blob-0, blob-1, blob-2, blob-3, etc.)
+      const classList = Array.from(element.classList);
+      classList.forEach(className => {
+        if (className.startsWith('blob-')) {
+          element.classList.remove(className);
+        }
+      });
+    }
+  }
+
+  // Initialize event-date blob remover
+  new EventDateBlobRemover();
 
   // Professional parallax implementation
   class GSAPParallaxController {
@@ -551,6 +767,8 @@ const events = [
   // Re-initialize on Astro page transitions
   document.addEventListener('astro:page-load', () => {
     new GSAPParallaxController();
+    new BlobContentRemover();
+    new EventDateBlobRemover();
   });
 
 </script>

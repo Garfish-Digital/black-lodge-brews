@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional WebGL Ripple Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base & Centering Styles --- */
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #f0f2f5 0%, #e0e4eb 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scrollbars */
+            color: #333;
+            font-size: 16px;
+        }
+
+        /* --- Card Container Styles --- */
+        #card-container {
+            position: relative; /* For absolute positioning of canvas */
+            width: 380px; /* Fixed width for card */
+            height: 280px; /* Fixed height for card */
+            background-color: #2c3e50; /* Darker background color */
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3), 0 5px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow for darker card */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden; /* Hide anything outside border-radius */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Subtle hover effect */
+        }
+
+        #card-container:hover {
+            transform: translateY(-8px); /* More pronounced lift */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        #card-container h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #ecf0f1; /* Lighter color for title */
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        #card-container p {
+            color: #bdc3c7; /* Lighter color for description */
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        #card-container .cta-button {
+            display: inline-block;
+            background-color: #3498db; /* Blue button for contrast */
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #card-container .cta-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* --- Canvas Overlay for WebGL Ripple --- */
+        #rippleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px; /* Match card border-radius */
+            pointer-events: none; /* Allow clicks to pass through to the card */
+            opacity: 0; /* Hidden by default, only visible during ripple */
+            transition: opacity 0.1s linear; /* Quick fade for appearance/disappearance */
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 600px) {
+            #card-container {
+                width: 90%;
+                max-width: 320px;
+                height: auto;
+                min-height: 250px;
+                padding: 25px;
+            }
+            #card-container h2 {
+                font-size: 1.6em;
+            }
+            #card-container p {
+                font-size: 0.9em;
+            }
+            #card-container .cta-button {
+                padding: 8px 20px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="card-container">
+        <h2 id="card-title">Dynamic Interaction</h2>
+        <p id="card-description">Click anywhere on this card to witness a stunning, GPU-accelerated ripple effect, originating from your precise click location.</p>
+        <a href="#" class="cta-button" id="card-cta">Learn More</a>
+    </div>
+
+    <canvas id="rippleCanvas"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.165.0/three.min.js"></script>
+
+    <script>
+        console.log("Script started."); // Debugging: Confirm script execution
+
+        // Debugging: Confirm Three.js is loaded
+        if (typeof THREE !== 'undefined') {
+            console.log("THREE object type:", typeof THREE);
+        } else {
+            console.error("ERROR: THREE is undefined. Three.js library might not have loaded correctly.");
+        }
+
+
+        const cardContainer = document.getElementById('card-container');
+        const rippleCanvas = document.getElementById('rippleCanvas');
+
+        let scene, camera, renderer, planeMesh, rippleMaterial;
+        let isRippleActive = false;
+        let rippleStartTime = 0;
+        const rippleDuration = 1000; // milliseconds for the entire ripple animation
+        let animationFrameId; // To store the requestAnimationFrame ID
+
+        // --- GLSL Shaders ---
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            uniform float u_time;        // 0 to 1, animation progress
+            uniform vec2 u_center;       // click UV coordinate (0-1)
+            uniform sampler2D u_texture; // the captured card content
+            uniform float u_aspect;      // aspect ratio of the card
+
+            varying vec2 vUv;
+
+            void main() {
+                vec2 uv = vUv;
+                vec2 p = uv - u_center; // Vector from ripple center to current pixel
+
+                // Correct for aspect ratio to make ripple perfectly circular on non-square cards
+                p.x *= u_aspect;
+
+                float dist = length(p); // Distance from center
+
+                // --- TUNABLE RIPPLE PARAMETERS ---
+                float maxRippleRadius = 1.0;     // Max extent of the ripple (normalized to corrected UV space)
+                float rippleEdgeSharpness = 0.06; // How sharp the ripple wave is (smaller is sharper)
+                float rippleAmplitude = 0.15;    // Max distortion amount (increased for visibility)
+                // --- END TUNABLE PARAMETERS ---
+
+                float currentRadius = u_time * maxRippleRadius;
+
+                // Create a smooth pulse that expands and then fades out
+                // 'strength' is high when 'dist' is close to 'currentRadius'
+                // smoothstep(edge0, edge1, x) returns 0 if x <= edge0, 1 if x >= edge1, smooth transition in between.
+                // By subtracting two smoothsteps, we create a bell curve (a smooth pulse/wave)
+                float strength = smoothstep(currentRadius - rippleEdgeSharpness, currentRadius, dist) -
+                                 smoothstep(currentRadius, currentRadius + rippleEdgeSharpness, dist);
+
+                // Make the entire effect fade out as time progresses
+                float fadeOut = 1.0 - u_time; // Linear fade out from 1 to 0
+                float distortion = strength * rippleAmplitude * fadeOut;
+
+                // Displace UVs
+                // normalize(p) gives the direction from center to pixel
+                vec2 displacedUV = uv + normalize(p) * distortion;
+
+                gl_FragColor = texture2D(u_texture, displacedUV);
+            }
+        `;
+
+        // --- Three.js Initialization ---
+        function initThreeJS(texture) {
+            console.log("Three.js initializing..."); // Debugging: Confirm init call
+
+            // Get card dimensions
+            const cardWidth = cardContainer.offsetWidth;
+            const cardHeight = cardContainer.offsetHeight;
+            const cardAspect = cardWidth / cardHeight;
+
+            // Set canvas dimensions to match card
+            rippleCanvas.width = cardWidth;
+            rippleCanvas.height = cardHeight;
+
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera (Orthographic to avoid perspective distortion on a flat plane)
+            camera = new THREE.OrthographicCamera(cardWidth / -2, cardWidth / 2, cardHeight / 2, cardHeight / -2, 1, 1000);
+            camera.position.z = 10; // Position camera back slightly
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({
+                canvas: rippleCanvas,
+                alpha: true, // Allow transparency to see HTML underneath if needed
+                antialias: true // Smooth edges
+            });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(cardWidth, cardHeight);
+            renderer.setClearColor(0x000000, 0); // Transparent background
+
+            // Geometry (Plane covering the card)
+            const geometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
+
+            // Material (Custom ShaderMaterial)
+            rippleMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    u_time: { value: 0.0 },
+                    u_center: { value: new THREE.Vector2(0.5, 0.5) }, // Default center
+                    u_texture: { value: texture },
+                    u_aspect: { value: cardAspect }
+                },
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                transparent: true // Important for alpha blending
+            });
+
+            // Mesh
+            planeMesh = new THREE.Mesh(geometry, rippleMaterial);
+            scene.add(planeMesh);
+
+            // Initial render to make sure everything is set up
+            renderer.render(scene, camera);
+            console.log("Three.js initialized."); // Debugging: Confirm successful init
+        }
+
+        // --- Animation Loop ---
+        function animate() {
+            if (isRippleActive) {
+                const currentTime = performance.now();
+                let elapsedTime = (currentTime - rippleStartTime) / rippleDuration;
+
+                if (elapsedTime < 1.0) {
+                    rippleMaterial.uniforms.u_time.value = elapsedTime;
+                    renderer.render(scene, camera);
+                    animationFrameId = requestAnimationFrame(animate); // Store ID
+                } else {
+                    // Ripple finished
+                    isRippleActive = false;
+                    rippleCanvas.style.opacity = 0; // Hide canvas
+                    // Reset u_time to ensure next ripple starts fresh
+                    rippleMaterial.uniforms.u_time.value = 0.0;
+                    console.log("Ripple animation finished."); // Debugging: Confirm animation end
+                }
+            }
+        }
+
+        // --- Click Handler for Ripple ---
+        cardContainer.addEventListener('click', (event) => {
+            if (!isRippleActive) {
+                console.log("Card clicked! Starting ripple."); // Debugging log
+                isRippleActive = true;
+                rippleStartTime = performance.now();
+
+                // Calculate click position relative to the card, normalized to 0-1 for shader
+                const rect = cardContainer.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width;
+                const y = 1.0 - (event.clientY - rect.top) / rect.height; // Invert Y for WebGL UVs (bottom-left origin)
+
+                // Ensure x and y are within valid range [0, 1]
+                const clampedX = Math.max(0, Math.min(1, x));
+                const clampedY = Math.max(0, Math.min(1, y));
+
+                rippleMaterial.uniforms.u_center.value.set(clampedX, clampedY);
+                rippleCanvas.style.opacity = 1; // Make canvas visible
+                
+                // Cancel any previous animation frame before starting a new one
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+                animationFrameId = requestAnimationFrame(animate); // Start the animation
+            } else {
+                console.log("Ripple already active, ignoring click."); // Debugging log
+            }
+        });
+
+        // --- Initial Setup (Capture Card Content & Init Three.js) ---
+        // html2canvas needs to run after DOM is rendered
+        window.addEventListener('load', () => {
+            console.log("Window loaded, attempting html2canvas."); // Debugging: Confirm load event
+            html2canvas(cardContainer, {
+                useCORS: true, // Important if content includes images from external domains
+                backgroundColor: null, // Transparent background if card has its own
+                scale: 2 // Render at higher resolution for better quality texture
+            }).then(canvas => {
+                // Convert the html2canvas output canvas into a Three.js texture
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.needsUpdate = true; // Tell Three.js to update the texture
+
+                // Initialize Three.js with the captured texture
+                initThreeJS(texture);
+            }).catch(error => {
+                console.error("Error capturing card content with html2canvas:", error);
+                // Fallback: If html2canvas fails, init Three.js with a simple color texture
+                initThreeJS(new THREE.Color(0x2c3e50)); // Use card's background color as fallback
+            });
+        });
+
+        // Handle window resize to adjust canvas and camera
+        window.addEventListener('resize', () => {
+            const cardWidth = cardContainer.offsetWidth;
+            const cardHeight = cardContainer.offsetHeight;
+
+            rippleCanvas.width = cardWidth;
+            rippleCanvas.height = cardHeight;
+
+            renderer.setSize(cardWidth, cardHeight);
+
+            camera.left = cardWidth / -2;
+            camera.right = cardWidth / 2;
+            camera.top = cardHeight / 2;
+            camera.bottom = cardHeight / -2;
+            camera.updateProjectionMatrix();
+
+            // Update aspect ratio uniform in shader
+            if (rippleMaterial && rippleMaterial.uniforms.u_aspect) {
+                rippleMaterial.uniforms.u_aspect.value = cardWidth / cardHeight;
+            }
+            // Re-capture card content on resize for sharper texture
+            html2canvas(cardContainer, {
+                useCORS: true,
+                backgroundColor: null,
+                scale: 2
+            }).then(canvas => {
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.needsUpdate = true;
+                if (rippleMaterial && rippleMaterial.uniforms.u_texture) {
+                    rippleMaterial.uniforms.u_texture.value = texture;
+                }
+                renderer.render(scene, camera); // Render once after texture update
+            });
+        });
+
+    </script>
+</body>
+</html>
