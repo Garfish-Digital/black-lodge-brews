@@ -694,15 +694,16 @@
     .hero {
         .hero-content {
             padding: 0 calc($spacing-lg - 80px);
+            margin-left: 3rem;
         }
 
         .hero-text {
             .hero-title {
-                font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.25);
+                font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.33);
             }
 
             .hero-subtitle {
-                font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.25);
+                font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.33);
             }
         }
     }

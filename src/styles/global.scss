@@ -172,20 +172,30 @@ a {
   animation: fadeInUp 0.8s ease-out;
 }
 
-// Custom scrollbar
+// Hidden scrollbar
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 0px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {
-  background: $primary-brown;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $amber-gold;
-  border-radius: 4px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFD54F;
+  background: transparent;
+}
+
+// Firefox scrollbar hiding
+html {
+  scrollbar-width: none;
+}
+
+// IE scrollbar hiding
+body {
+  -ms-overflow-style: none;
 }
