@@ -655,12 +655,13 @@
         padding-top: 0;
 
         .hero-content {
-            padding: 0 calc($spacing-lg - 45px);
+            padding: 0 2rem;
+            // padding: 0 calc($spacing-lg - 45px);
         }
 
         .hero-text {
             .hero-title {
-                font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.5);
+                font-size: calc(clamp(2.25rem, 4.5vw, 5rem) * 1.5);
             }
 
             .hero-subtitle {
@@ -670,11 +671,19 @@
     }
 }
 
+// Above Surface Duo - iPad and larger
+@media (min-width: 541px) {
+    .hero .hero-text .hero-title {
+        font-size: clamp(5rem, 8vw, 9rem);
+    }
+}
+
 // Surface Duo landscape (720x540)
 @media (max-height: 540px) and (min-width: 720px) {
     .hero {
         .hero-content {
-            padding: 0 calc($spacing-lg - 80px);
+            padding: 0 2rem;
+            // padding: 0 calc($spacing-lg - 80px);
         }
 
         .hero-text {
@@ -699,7 +708,7 @@
 
         .hero-text {
             .hero-title {
-                font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.33);
+                font-size: calc(clamp(2.25rem, 5vw, 8rem) * 1.33);
             }
 
             .hero-subtitle {
