@@ -191,29 +191,33 @@ const events = [
         <div class="taproom-description">
           <h3>Immerse Yourself</h3>
           <div class="taproom-features">
-              <div class="feature blob-content">
-                <h4>🍺 Fresh Pours</h4>
+              <div class="feature">
+                <h4>Fresh Pours</h4>
                 <p>
                   All our beers are served at the perfect temperature from our
                   custom tap system
                 </p>
-                <!-- <canvas class="ripple-canvas"></canvas> -->
               </div>
-              <div class="feature blob-content">
-                <h4>🎵 Live Music</h4>
+              <div class="feature">
+                <h4>Live Music</h4>
                 <p>
                   Regular performances featuring local jazz groups, folk singers,
                   and ambient artists
                 </p>
-                <!-- <canvas class="ripple-canvas"></canvas> -->
               </div>
-              <div class="feature blob-content">
-                <h4>🥨 Artisan Bites</h4>
+              <div class="feature">
+                <h4>Artisan Bites</h4>
                 <p>
                   Carefully selected food pairings, sweet and savory, that
                   complement our unique brews
                 </p>
-                <!-- <canvas class="ripple-canvas"></canvas> -->
+              </div>
+              <div class="feature">
+                <h4>Private Reserve</h4>
+                <p>
+                  Exclusive small-batch releases available only to lodge members
+                  and in-house guests
+                </p>
               </div>
             </div>
         </div>
@@ -224,7 +228,10 @@ const events = [
               {
                 events.map((event, idx) => (
                   <div class="event-item">
-                    <div class={`event-date watery-blob-container blob-${idx}`}><span>{event.date}</span></div>
+                    <div class="event-date">
+                      <span class="event-day">{event.date.split(' ')[1]}</span>
+                      <span class="event-month">{event.date.split(' ')[0].slice(0, 3).toUpperCase()}</span>
+                    </div>
                     <div class="event-details">
                       <h4>{event.title}</h4>
                       <p>{event.description}</p>
@@ -304,9 +311,6 @@ const events = [
         <div class="map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11179.794472859286!2d-122.69833!3d45.52306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x549509fc2302c4ad%3A0x23b6b67b7be6d6d1!2sPearl%20District%2C%20Portland%2C%20OR!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-            width="70%"
-            height="300"
-            style="border:0; border-radius: 16px; margin-top: 50px;"
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
@@ -337,46 +341,6 @@ const events = [
 
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
-
-  // Card animation on scroll
-  class CardAnimator {
-    private animatedCards: Set<Element>;
-    constructor() {
-      this.animatedCards = new Set();
-      this.init();
-    }
-
-    init() {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !this.animatedCards.has(entry.target)) {
-              // Add staggered delay for multiple cards
-              const parent = entry.target.parentElement;
-              const delay = parent
-                ? Array.from(parent.children).indexOf(entry.target) * 150
-                : 0;
-
-              setTimeout(() => {
-                entry.target.classList.add("fade-in-up");
-                this.animatedCards.add(entry.target);
-              }, delay);
-            }
-          });
-        },
-        {
-          threshold: 0.2,
-          rootMargin: "0px 0px -30px 0px",
-        }
-      );
-
-      // Observe all feature and event cards
-      document.querySelectorAll(".feature, .event-item").forEach((card) => {
-        observer.observe(card);
-      });
-    }
-  }
-
 
   // Three.js WebGL Ripple Effect for Feature Cards
   class RippleEffect {
@@ -581,29 +545,9 @@ const events = [
     }
   }
 
-  // Initialize when DOM is loaded
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log('DOM loaded, initializing components...');
-    new CardAnimator();
-    
-    // Initialize ripple effects for feature cards
-    const rippleCards = document.querySelectorAll('.ripple-card');
-    console.log('Found', rippleCards.length, 'ripple cards');
-    
-    rippleCards.forEach(card => {
-      console.log('Initializing ripple effect for card:', card);
-      new RippleEffect(card as HTMLElement);
-    });
-  });
-
   // Re-initialize on Astro page transitions
   document.addEventListener("astro:page-load", () => {
-    new CardAnimator();
-    
-    // Initialize ripple effects for feature cards
-    document.querySelectorAll('.ripple-card').forEach(card => {
-      new RippleEffect(card as HTMLElement);
-    });
+    new GSAPParallaxController();
   });
 
   // Beer level filling animation
@@ -638,83 +582,6 @@ const events = [
 
   // Initialize section fill animation
   new SectionFillAnimation();
-
-  // Blob content hover removal functionality
-  class BlobContentRemover {
-    constructor() {
-      this.init();
-    }
-
-    init() {
-      // Find all feature divs with blob-content class
-      const featureElements = document.querySelectorAll('.feature.blob-content');
-      
-      featureElements.forEach(element => {
-        // Desktop: mouseenter for hover
-        element.addEventListener('mouseenter', () => {
-          element.classList.remove('blob-content');
-        });
-        
-        // Mobile: touchstart for tap/press
-        element.addEventListener('touchstart', () => {
-          element.classList.remove('blob-content');
-        }, { passive: true });
-        
-        // Alternative: click event (works on both desktop and mobile)
-        element.addEventListener('click', () => {
-          element.classList.remove('blob-content');
-        });
-      });
-    }
-  }
-
-  // Initialize blob content remover
-  new BlobContentRemover();
-
-  // Event-date blob remover functionality
-  class EventDateBlobRemover {
-    constructor() {
-      this.init();
-    }
-
-    init() {
-      // Find all event-date elements
-      const eventDateElements = document.querySelectorAll('.event-date');
-      
-      eventDateElements.forEach(element => {
-        // Desktop: mouseenter for hover
-        element.addEventListener('mouseenter', () => {
-          this.removeBlobClasses(element);
-        });
-        
-        // Mobile: touchstart for tap/press
-        element.addEventListener('touchstart', () => {
-          this.removeBlobClasses(element);
-        }, { passive: true });
-        
-        // Alternative: click event (works on both desktop and mobile)
-        element.addEventListener('click', () => {
-          this.removeBlobClasses(element);
-        });
-      });
-    }
-
-    removeBlobClasses(element) {
-      // Remove watery-blob-container class
-      element.classList.remove('watery-blob-container');
-      
-      // Remove any blob-* classes (blob-0, blob-1, blob-2, blob-3, etc.)
-      const classList = Array.from(element.classList);
-      classList.forEach(className => {
-        if (className.startsWith('blob-')) {
-          element.classList.remove(className);
-        }
-      });
-    }
-  }
-
-  // Initialize event-date blob remover
-  new EventDateBlobRemover();
 
   // Professional parallax implementation
   class GSAPParallaxController {
@@ -767,8 +634,6 @@ const events = [
   // Re-initialize on Astro page transitions
   document.addEventListener('astro:page-load', () => {
     new GSAPParallaxController();
-    new BlobContentRemover();
-    new EventDateBlobRemover();
   });
 
 </script>

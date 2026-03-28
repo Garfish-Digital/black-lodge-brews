@@ -70,28 +70,54 @@ const {
   .beer-card {
     background: rgba(245, 230, 211, 0.05);
     border-radius: $border-radius-lg;
+    margin: $spacing-xxl $spacing-lg;
     padding: $spacing-lg;
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    transition: all $transition-medium;
+    transition: border-color 0.45s ease;
     border: 1px solid rgba(245, 230, 211, 0.1);
-    
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200, 146, 10, 0.7), transparent);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.9s ease;
+      z-index: 1;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(200, 146, 10, 0.12) 0%, transparent 72%);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     &:hover {
-      transform: translateY(-8px);
-      box-shadow: $shadow-xl;
-      background: rgba(245, 230, 211, 0.08);
-      
+      &::before {
+        transform: scaleX(1);
+      }
+
+      &::after {
+        opacity: 1;
+      }
+
       .beer-glass .beer-liquid {
         height: 80%;
       }
-      
+
       .beer-bubbles .bubble {
         animation-play-state: running;
-      }
-      
-      .ripple-overlay {
-        animation: rippleEffect 0.6s ease-out;
       }
     }
     
@@ -113,6 +139,8 @@ const {
       display: flex;
       gap: $spacing-lg;
       align-items: flex-start;
+      position: relative;
+      z-index: 1;
     }
     
     .beer-glass {

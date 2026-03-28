@@ -1,0 +1,87 @@
+---
+// GrainOverlay — Animated warm film grain, fixed overlay across all sections.
+// Draws on a tiled 256x256 off-screen canvas for performance.
+// Throttled to ~30fps. Pauses when tab is not visible.
+---
+
+<canvas id="grain-overlay"></canvas>
+
+<style>
+  #grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9997;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('grain-overlay') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+
+  const offscreen = document.createElement('canvas');
+  offscreen.width = 256;
+  offscreen.height = 256;
+  const oCtx = offscreen.getContext('2d')!;
+
+  let frameCount = 0;
+  let isVisible = true;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function drawGrain() {
+    // 2x2px grain particles for a natural, film-like clump
+    const gsize = 1;
+    const imageData = oCtx.createImageData(256, 256);
+    const data = imageData.data;
+
+    for (let y = 0; y < 256; y += gsize) {
+      for (let x = 0; x < 256; x += gsize) {
+        // Sparse — roughly half the particles are fully transparent
+        const alpha = Math.random() > 0.5 ? Math.floor(Math.random() * 8) : 0;
+        for (let dy = 0; dy < gsize; dy++) {
+          for (let dx = 0; dx < gsize; dx++) {
+            const i = ((y + dy) * 256 + (x + dx)) * 4;
+            data[i]     = 255; // R — warm amber tint
+            data[i + 1] = 215; // G
+            data[i + 2] = 160; // B
+            data[i + 3] = alpha;
+          }
+        }
+      }
+    }
+
+    oCtx.putImageData(imageData, 0, 0);
+
+    const pattern = ctx.createPattern(offscreen, 'repeat')!;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function animate() {
+    if (!isVisible) return;
+    frameCount++;
+    if (frameCount % 1 === 0) drawGrain(); // ~30fps
+    requestAnimationFrame(animate);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    isVisible = !document.hidden;
+    if (isVisible) {
+      frameCount = 0;
+      animate();
+    }
+  });
+
+  window.addEventListener('resize', resize);
+
+  resize();
+  animate();
+</script>
