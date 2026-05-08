@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import LiquidTransition from "../components/LiquidTransition.astro";
 import BeerCard from "../components/BeerCard.astro";
 import MistParticlesBeer from "../components/MistParticlesBeer.astro";
 import MistParticlesFireflies from "../components/MistParticlesFireflies.astro";
@@ -22,7 +21,7 @@ const beers = [
     abv: 5.4,
     ibu: 35,
     description:
-      "Rich chocolate and coffee notes with a smooth texture. Perfect for contemplating life's mysteries.",
+      "Velvet chocolate and roasted coffee — a measured brew for those who contemplate life's quieter mysteries.",
     color: "#2F1B14",
     available: true,
   },
@@ -32,7 +31,7 @@ const beers = [
     abv: 4.8,
     ibu: 22,
     description:
-      "Crisp and clean with a subtle malty sweetness and a hint of the forest floor after rain.",
+      "Crisp and clean, with a subtle malt sweetness and the earthy hush of forest floor after evening rain.",
     color: "#B87333",
     available: true,
   },
@@ -42,7 +41,7 @@ const beers = [
     abv: 5.9,
     ibu: 40,
     description:
-      "A bold red ale with caramel backbone and curious floral notes that dance on the palate.",
+      "A bold red ale with a caramel backbone and curious floral accents that drift long across the palate.",
     color: "#A0522D",
     available: false,
   },
@@ -52,7 +51,7 @@ const beers = [
     abv: 4.2,
     ibu: 15,
     description:
-      "Light and cloudy with notes of banana and clove, as enigmatic as morning mist on the mountains.",
+      "Light and cloudy, laced with banana and clove — as enigmatic as the morning mist on the mountains.",
     color: "#F4A460",
     available: true,
   },
@@ -62,7 +61,7 @@ const beers = [
     abv: 8.2,
     ibu: 55,
     description:
-      "Deep, dark, and complex with notes of vanilla, oak, and whispers of ancient secrets.",
+      "Deep, dark, and brooding — vanilla and oak shadowed by the weight of ancient, unspoken secrets.",
     color: "#1C1C1C",
     available: true,
   },
@@ -97,8 +96,6 @@ const events = [
   title="Black Lodge Brews - Premium Craft Brewery"
   description="Enter the mysterious world of Black Lodge Brews, where every sip tells a story and every brew holds secrets waiting to be discovered."
 >
-
-  <LiquidTransition direction="up" duration={0.8} color="#FFA000" />
 
   <!-- Hero Section -->
   <section class="hero section filling-section" id="lodge">
@@ -175,7 +172,7 @@ const events = [
     </div>
     <MistParticlesFireflies
       particleCount={10}
-      color="#FFA000"
+      color="#C8920A"
       size={1}
       speed={0.05}
       opacity={0.3}
@@ -233,7 +230,7 @@ const events = [
                   <div class="event-item">
                     <div class="event-date">
                       <span class="event-day">{event.date.split(' ')[1]}</span>
-                      <span class="event-month">{event.date.split(' ')[0].slice(0, 3).toUpperCase()}</span>
+                      <span class="event-month">{event.date.split(' ')[0].slice(0, 3)}</span>
                     </div>
                     <div class="event-details">
                       <h4>{event.title}</h4>
@@ -261,7 +258,7 @@ const events = [
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#FFD54F"
+                fill="#C8920A"
                 class="contact-icon"
                 ><path
                   fill-rule="evenodd"
@@ -277,7 +274,7 @@ const events = [
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#FFD54F"
+                fill="#C8920A"
                 class="contact-icon"
                 ><path
                   d="M10.5 18.75a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"
@@ -295,7 +292,7 @@ const events = [
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                fill="#FFD54F"
+                fill="#C8920A"
                 class="contact-icon"
                 ><path
                   fill-rule="evenodd"
@@ -344,209 +341,6 @@ const events = [
 
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger);
-
-  // Three.js WebGL Ripple Effect for Feature Cards
-  class RippleEffect {
-    private card: HTMLElement;
-    private canvas: HTMLCanvasElement;
-    private scene: any;
-    private camera: any;
-    private renderer: any;
-    private planeMesh: any;
-    private rippleMaterial: any;
-    private isRippleActive: boolean;
-    private rippleStartTime: number;
-    private rippleDuration: number;
-    private animationFrameId: number | null;
-
-    constructor(cardElement: HTMLElement) {
-      this.card = cardElement;
-      this.canvas = cardElement.querySelector('.ripple-canvas') as HTMLCanvasElement;
-      this.scene = null;
-      this.camera = null;
-      this.renderer = null;
-      this.planeMesh = null;
-      this.rippleMaterial = null;
-      this.isRippleActive = false;
-      this.rippleStartTime = 0;
-      this.rippleDuration = 1000;
-      this.animationFrameId = null;
-      
-      console.log('RippleEffect constructor called for card:', this.card);
-      console.log('Canvas found:', this.canvas);
-      
-      this.init();
-    }
-    
-    init() {
-      // Libraries should be available since they're loaded in the head
-      console.log('Initializing ripple effect...');
-      console.log('THREE available:', typeof (window as any).THREE);
-      console.log('html2canvas available:', typeof (window as any).html2canvas);
-      
-      if (typeof (window as any).THREE !== 'undefined' && typeof (window as any).html2canvas !== 'undefined') {
-        this.captureCardContent();
-        this.setupEventListeners();
-      } else {
-        console.error('Libraries not loaded yet, trying again in 500ms');
-        setTimeout(() => this.init(), 500);
-      }
-    }
-    
-    captureCardContent() {
-      console.log('Capturing card content...');
-      (window as any).html2canvas(this.card, {
-        useCORS: true,
-        backgroundColor: null,
-        scale: 2
-      }).then((canvas: HTMLCanvasElement) => {
-        console.log('html2canvas succeeded, creating texture...');
-        const THREE = (window as any).THREE;
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.needsUpdate = true;
-        this.initThreeJS(texture);
-      }).catch((error: any) => {
-        console.warn('html2canvas failed, using fallback:', error);
-        const THREE = (window as any).THREE;
-        this.initThreeJS(new THREE.Color(0x3e2723));
-      });
-    }
-    
-    initThreeJS(texture: any) {
-      console.log('Initializing Three.js with texture:', texture);
-      const THREE = (window as any).THREE;
-      const cardWidth = this.card.offsetWidth;
-      const cardHeight = this.card.offsetHeight;
-      const cardAspect = cardWidth / cardHeight;
-      console.log('Card dimensions:', cardWidth, 'x', cardHeight, 'aspect:', cardAspect);
-      
-      this.canvas.width = cardWidth;
-      this.canvas.height = cardHeight;
-      
-      // Scene setup
-      this.scene = new THREE.Scene();
-      this.camera = new THREE.OrthographicCamera(
-        cardWidth / -2, cardWidth / 2,
-        cardHeight / 2, cardHeight / -2,
-        1, 1000
-      );
-      this.camera.position.z = 10;
-      
-      // Renderer setup
-      this.renderer = new THREE.WebGLRenderer({
-        canvas: this.canvas,
-        alpha: true,
-        antialias: true
-      });
-      this.renderer.setPixelRatio(window.devicePixelRatio);
-      this.renderer.setSize(cardWidth, cardHeight);
-      this.renderer.setClearColor(0x000000, 0);
-      
-      // Geometry and material
-      const geometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
-      
-      const vertexShader = `
-        varying vec2 vUv;
-        void main() {
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `;
-      
-      const fragmentShader = `
-        uniform float u_time;
-        uniform vec2 u_center;
-        uniform sampler2D u_texture;
-        uniform float u_aspect;
-        varying vec2 vUv;
-        
-        void main() {
-          vec2 uv = vUv;
-          vec2 p = uv - u_center;
-          p.x *= u_aspect;
-          
-          float dist = length(p);
-          float maxRippleRadius = 1.0;
-          float rippleEdgeSharpness = 0.06;
-          float rippleAmplitude = 0.12;
-          
-          float currentRadius = u_time * maxRippleRadius;
-          float strength = smoothstep(currentRadius - rippleEdgeSharpness, currentRadius, dist) -
-                          smoothstep(currentRadius, currentRadius + rippleEdgeSharpness, dist);
-          
-          float fadeOut = 1.0 - u_time;
-          float distortion = strength * rippleAmplitude * fadeOut;
-          
-          vec2 displacedUV = uv + normalize(p) * distortion;
-          gl_FragColor = texture2D(u_texture, displacedUV);
-        }
-      `;
-      
-      this.rippleMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-          u_time: { value: 0.0 },
-          u_center: { value: new THREE.Vector2(0.5, 0.5) },
-          u_texture: { value: texture },
-          u_aspect: { value: cardAspect }
-        },
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
-        transparent: true
-      });
-      
-      this.planeMesh = new THREE.Mesh(geometry, this.rippleMaterial);
-      this.scene.add(this.planeMesh);
-      
-      this.renderer.render(this.scene, this.camera);
-    }
-    
-    setupEventListeners() {
-      console.log('Setting up event listeners for card:', this.card);
-      this.card.addEventListener('click', (event: MouseEvent) => {
-        console.log('Card clicked!', event);
-        if (!this.isRippleActive && this.rippleMaterial) {
-          console.log('Triggering ripple...');
-          this.triggerRipple(event);
-        } else {
-          console.log('Ripple not triggered - isRippleActive:', this.isRippleActive, 'rippleMaterial:', this.rippleMaterial);
-        }
-      });
-    }
-    
-    triggerRipple(event: MouseEvent) {
-      this.isRippleActive = true;
-      this.rippleStartTime = performance.now();
-      
-      const rect = this.card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = 1.0 - (event.clientY - rect.top) / rect.height;
-      
-      const clampedX = Math.max(0, Math.min(1, x));
-      const clampedY = Math.max(0, Math.min(1, y));
-      
-      this.rippleMaterial.uniforms.u_center.value.set(clampedX, clampedY);
-      this.canvas.style.opacity = '1';
-      
-      this.animate();
-    }
-    
-    animate() {
-      if (this.isRippleActive) {
-        const currentTime = performance.now();
-        let elapsedTime = (currentTime - this.rippleStartTime) / this.rippleDuration;
-        
-        if (elapsedTime < 1.0) {
-          this.rippleMaterial.uniforms.u_time.value = elapsedTime;
-          this.renderer.render(this.scene, this.camera);
-          this.animationFrameId = requestAnimationFrame(() => this.animate());
-        } else {
-          this.isRippleActive = false;
-          this.canvas.style.opacity = '0';
-          this.rippleMaterial.uniforms.u_time.value = 0.0;
-        }
-      }
-    }
-  }
 
   // Re-initialize on Astro page transitions
   document.addEventListener("astro:page-load", () => {

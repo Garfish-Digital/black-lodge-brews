@@ -345,36 +345,6 @@
             border-radius: $border-radius-lg;
         }
     }
-
-    .map-placeholder {
-        background: rgba(245, 230, 211, 0.05);
-        border-radius: $border-radius-lg;
-        border: 1px solid rgba(245, 230, 211, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 300px;
-
-        .map-content {
-            text-align: center;
-
-            span {
-                font-size: 3rem;
-                display: block;
-                margin-bottom: $spacing-md;
-            }
-
-            p {
-                color: rgba(245, 230, 211, 0.8);
-                margin-bottom: $spacing-xs;
-
-                &:first-of-type {
-                    color: $amber-gold;
-                    font-weight: 600;
-                }
-            }
-        }
-    }
 }
 
 @media (max-width: $breakpoint-lg) {
@@ -422,7 +392,7 @@
 .story-bg {
     background-image:
         linear-gradient(rgba(27, 58, 27, 0.85), rgba(26, 14, 10, 0.9)),
-        url('/images/iStock-923623146.jpg');
+        url('/images/story-trees.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -431,7 +401,7 @@
 .contact-bg {
     background-image:
         linear-gradient(rgba(26, 14, 10, 0.8), rgba(62, 39, 35, 0.85)),
-        url('/images/iStock-1393310438.jpg');
+        url('/images/contact-beer-table.webp');
     background-size: 150%;
     background-position: calc(50% - 20vw) center;
     background-repeat: no-repeat;
@@ -488,10 +458,9 @@
     h4 {
         color: $amber-gold;
         margin-bottom: $spacing-sm;
-        font-size: 0.8rem;
+        font-size: 1rem;
         font-weight: 600;
         letter-spacing: 0.1em;
-        text-transform: uppercase;
         position: relative;
         z-index: 1;
     }
@@ -550,12 +519,12 @@
         h4 {
             color: $foam-cream;
             margin-bottom: $spacing-xs;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         p {
             color: rgba(245, 230, 211, 0.65);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             margin: 0;
             line-height: 1.6;
         }

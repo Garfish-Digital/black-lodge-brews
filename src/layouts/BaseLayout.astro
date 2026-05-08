@@ -26,16 +26,10 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Alfa+Slab+One&display=swap" rel="stylesheet">
-  
-  <!-- Three.js and html2canvas for ripple effects -->
-  <script is:inline src="/libs/three.min.js"></script>
-  <script is:inline src="/libs/html2canvas.min.js"></script>
 </head>
 <body>
   <GrainOverlay />
-  <div class="liquid-page-transition" id="pageTransition"></div>
-  
+
   <nav class="vertical-navbar">
     <a href="#lodge" class="nav-link">Lodge</a>
     <a href="#taps" class="nav-link">Tap List</a>
@@ -69,7 +63,7 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2024 Black Lodge Brews. All rights reserved.</p>
+        <p>&copy; 2026 Black Lodge Brews. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -178,18 +172,6 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
       }
     }
 
-    // Liquid page transition effect
-    function triggerPageTransition() {
-      const transition = document.getElementById('pageTransition');
-      if (transition) {
-        transition.classList.add('active');
-        setTimeout(() => {
-          transition.classList.remove('active');
-        }, 800);
-      }
-    }
-
-
     // Initialize navigation manager when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
       new NavigationManager();
@@ -231,25 +213,25 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
       color: $foam-cream;
       text-decoration: none;
       padding: calc($spacing-sm * 0.75);
-      border-radius: $border-radius-md;
+      border-radius: $border-radius-sm;
       font-weight: 500;
       font-size: 0.675rem;
-      border: 1px solid #FFA000;
+      border: 1px solid $amber-gold;
       transition: all $transition-fast;
       text-align: center;
       backdrop-filter: blur(10px);
-      
+
       &:hover {
-        background: rgba(255, 160, 0, 0.2);
+        background: rgba(200, 146, 10, 0.2);
         color: $amber-gold;
-        border-color: rgba(255, 160, 0, 0.5);
+        border-color: rgba(200, 146, 10, 0.5);
       }
-      
+
       &.active {
-        background: rgba(255, 160, 0, 0.3);
+        background: rgba(200, 146, 10, 0.3);
         color: $amber-gold;
         border-color: $amber-gold;
-        box-shadow: 0 0 10px rgba(255, 160, 0, 0.3);
+        box-shadow: 0 0 10px rgba(200, 146, 10, 0.3);
       }
     }
   }

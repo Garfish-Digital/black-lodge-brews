@@ -7,18 +7,16 @@ export interface Props {
   description: string;
   color?: string;
   available?: boolean;
-  image?: string;
 }
 
-const { 
+const {
   name,
   type,
   abv,
   ibu,
   description,
-  color = '#FFA000',
-  available = true,
-  image
+  color = '#C8920A',
+  available = true
 } = Astro.props;
 ---
 
@@ -60,8 +58,6 @@ const {
       </div>
     </div>
   </div>
-  
-  <div class="ripple-overlay"></div>
 </div>
 
 <style lang="scss">
@@ -69,7 +65,7 @@ const {
 
   .beer-card {
     background: rgba(245, 230, 211, 0.05);
-    border-radius: $border-radius-lg;
+    border-radius: $border-radius-sm;
     margin: $spacing-xxl $spacing-lg;
     padding: $spacing-lg;
     position: relative;
@@ -284,39 +280,31 @@ const {
       }
       
       .beer-status {
-        .status-available {
-          background: rgba(27, 58, 27, 0.8);
-          color: #4CAF50;
-          padding: $spacing-xs $spacing-sm;
-          border-radius: $border-radius-sm;
-          font-size: 0.8rem;
-          font-weight: 600;
-          border: 1px solid rgba(76, 175, 80, 0.3);
-        }
-        
+        .status-available,
         .status-unavailable {
-          background: rgba(138, 43, 226, 0.2);
-          color: #BA68C8;
+          display: inline-block;
           padding: $spacing-xs $spacing-sm;
-          border-radius: $border-radius-sm;
-          font-size: 0.8rem;
+          border-radius: 2px;
+          font-size: 0.7rem;
           font-weight: 600;
-          border: 1px solid rgba(186, 104, 200, 0.3);
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+        }
+
+        .status-available {
+          background: rgba(200, 146, 10, 0.1);
+          color: $amber-gold;
+          border: 1px solid rgba(200, 146, 10, 0.35);
+        }
+
+        .status-unavailable {
+          background: rgba(245, 230, 211, 0.03);
+          color: rgba(245, 230, 211, 0.5);
+          border: 1px solid rgba(245, 230, 211, 0.12);
         }
       }
     }
     
-    .ripple-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle, rgba(255, 160, 0, 0.2) 0%, transparent 70%);
-      opacity: 0;
-      pointer-events: none;
-      border-radius: $border-radius-lg;
-    }
   }
 
   @keyframes bubbleRise {
@@ -331,21 +319,6 @@ const {
     100% {
       transform: translateY(-60px) scale(0);
       opacity: 0;
-    }
-  }
-
-  @keyframes rippleEffect {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1.2);
     }
   }
 
@@ -373,7 +346,7 @@ const {
     constructor(element) {
       this.element = element;
       this.liquid = element.querySelector('.beer-liquid');
-      this.color = element.dataset.color || '#FFA000';
+      this.color = element.dataset.color || '#C8920A';
       this.hasAnimated = false;
       
       this.setupColor();
@@ -415,7 +388,7 @@ const {
         const target = parseFloat(statValue.dataset.target);
         const isABV = statValue.textContent.includes('%');
         
-        this.animateNumber(statValue, 0, target, 3000, isABV);
+        this.animateNumber(statValue, 0, target, 2000, isABV);
       });
     }
     

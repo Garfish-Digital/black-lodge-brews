@@ -57,7 +57,7 @@ a {
   transition: color $transition-fast;
   
   &:hover {
-    color: #FFD54F;
+    color: #E8B84B;
   }
 }
 
@@ -76,7 +76,7 @@ a {
   overflow: hidden;
   
   &:hover {
-    background: #FFD54F;
+    background: #E8B84B;
     transform: translateY(-2px);
     box-shadow: $shadow-lg;
   }
@@ -201,4 +201,25 @@ html {
 // IE scrollbar hiding
 body {
   -ms-overflow-style: none;
+}
+
+// Accessibility: respect reduced-motion preferences
+@media (prefers-reduced-motion: reduce) {
+  #grain-overlay,
+  .mist-container-beer,
+  .mist-container-fireflies {
+    display: none;
+  }
+
+  .parallax-bg {
+    transform: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
