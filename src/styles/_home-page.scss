@@ -34,7 +34,8 @@
     .hero-content { width: 100%; }
 
     .hero-eyebrow {
-        color: $foam-cream;
+        color: $amber-gold;
+        // color: $foam-cream;
         font-size: 0.7rem;
         letter-spacing: 0.18em;
         text-transform: uppercase;
@@ -209,7 +210,7 @@
     padding: clamp(15rem, 20vw, 20rem) 0 clamp(4rem, 8vw, 8rem);
 
     @media (max-width: $breakpoint-md) {
-        padding-top: clamp(4rem, 10vw, 5rem);
+        padding-top: clamp(8rem, 20vw, 10rem);
     }
 
     .container {
@@ -254,8 +255,8 @@
         padding-block: clamp(2.5rem, 5vw, 4rem);
 
         h3 {
-            color: $foam-cream;
-            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            color: $amber-gold;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
             font-weight: 400;
             margin: 0;
         }
