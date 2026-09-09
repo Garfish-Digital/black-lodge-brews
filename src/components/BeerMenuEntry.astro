@@ -1,0 +1,78 @@
+---
+export interface Props {
+  name: string;
+  type: string;
+  abv: number;
+  ibu: number;
+  description: string;
+}
+const { name, type, abv, ibu, description } = Astro.props;
+---
+
+<li class="beer-menu-entry">
+  <h3>{name}</h3>
+  <p class="beer-menu-style">{type}</p>
+  <p class="beer-menu-notes">{description}</p>
+  <dl class="beer-menu-specs">
+    <div><dt>ABV</dt><dd>{abv.toFixed(1)}%</dd></div>
+    <div><dt>IBU</dt><dd>{ibu}</dd></div>
+  </dl>
+</li>
+
+<style lang="scss">
+  @use '../styles/variables' as *;
+
+  .beer-menu-entry {
+    min-width: 0;
+    list-style: none;
+    padding: 2rem 0 2.25rem;
+    border-top: 1px solid rgba($foam-cream, 0.22);
+    font-family: $font-body;
+
+    h3 {
+      margin: 0 0 0.5rem;
+      color: $foam-cream;
+      font-family: $font-display;
+      font-size: clamp(1.5rem, 2.2vw, 2rem);
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      overflow-wrap: break-word;
+    }
+
+    p { margin: 0; }
+  }
+
+  .beer-menu-style {
+    color: $amber-gold;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .beer-menu-entry .beer-menu-notes {
+    margin-top: 1rem;
+    max-width: 42ch;
+    color: rgba($foam-cream, 0.85);
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .beer-menu-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.5rem 0 0;
+    color: $foam-cream;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+
+    div { display: flex; gap: 0.5rem; align-items: baseline; }
+    dt { color: rgba($foam-cream, 0.75); letter-spacing: 0.05em; }
+    dd { margin: 0; }
+  }
+
+  @media (max-width: 768px) {
+    .beer-menu-entry { padding-block: 1.75rem; }
+  }
+</style>

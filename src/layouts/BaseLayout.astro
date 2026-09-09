@@ -51,25 +51,64 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
           <p>Making exceptional beers since 2023</p>
         </div>
         <div class="footer-section">
-          <h4>Hours</h4>
-          <p>Mon-Thu: 4pm-10pm</p>
-          <p>Fri-Sat: 2pm-12am</p>
-          <p>Sun: 2pm-9pm</p>
+          <h4>Connect</h4>
+          <div class="footer-socials" role="group" aria-label="Social and email contacts">
+            <button type="button" class="social-button" aria-label="Instagram (demo)" title="Instagram"
+              data-demo-message="Thanks for stopping by! This opens our Instagram on the live website.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg>
+            </button>
+            <button type="button" class="social-button" aria-label="Untappd (demo)" title="Untappd"
+              data-demo-message="Cheers! This opens our Untappd profile on the live website.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <g transform="rotate(-38 12 12)">
+                  <path d="M10 2h4v5l2 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10l2-3Z" />
+                  <path d="M10 5h4M8 13h8M8 17h8" />
+                </g>
+                <g transform="rotate(38 12 12)">
+                  <path d="M10 2h4v5l2 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10l2-3Z" fill="var(--social-surface)" />
+                  <path d="M10 5h4M8 13h8M8 17h8" />
+                </g>
+              </svg>
+            </button>
+            <button type="button" class="social-button" aria-label="Email (demo)" title="Email"
+              data-demo-message="We’d love to hear from you! This opens your email app on the live website.">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <rect x="2.5" y="4.5" width="19" height="15" rx="2" />
+                <path d="m3 6 9 7 9-7" />
+              </svg>
+            </button>
+          </div>
         </div>
         <div class="footer-section">
           <h4>Contact</h4>
-          <p>123 Brewery Lane</p>
+          <p>312 Loggers Lane</p>
           <p>Portland, OR 97210</p>
-          <p>(503) 555-BREW</p>
+          <p>(503) 755-BREW</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 Black Lodge Brews. All rights reserved.</p>
+        <p>&copy; <span id="copyright-year">{new Date().getFullYear()}</span> Black Lodge Brews. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
   <script>
+    // Refresh the build-time fallback when the static page is opened.
+    const copyrightYear = document.getElementById('copyright-year');
+    if (copyrightYear) {
+      copyrightYear.textContent = String(new Date().getFullYear());
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('.social-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        window.alert(button.dataset.demoMessage);
+      });
+    });
+
     // Navigation active state management
     class NavigationManager {
       constructor() {
@@ -230,7 +269,7 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
 
       &.active {
         background: rgba(200, 146, 10, 0.3);
-        color: $amber-gold;
+        // color: $amber-gold;
         border-color: $amber-gold;
         box-shadow: 0 0 10px rgba(200, 146, 10, 0.3);
       }
@@ -253,7 +292,14 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
     }
     
     .footer-section {
-      h3, h4 {
+      h3 {
+        color: $foam-cream;
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
+        font-weight: 400;
+        margin: 0 0 $spacing-sm;
+      }
+
+      h4 {
         color: $amber-gold;
         margin-bottom: $spacing-sm;
       }
@@ -264,6 +310,32 @@ const { title = 'Black Lodge Brews', description = 'Premium craft brewery with m
       }
     }
     
+    .footer-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .social-button {
+      --social-surface: #{$roasted-malt};
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 9px;
+      color: $amber-gold;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: border-color $transition-fast;
+
+      svg { display: block; width: 24px; height: 24px; }
+      &:hover { border-color: rgba($amber-gold, 0.6); }
+      &:focus-visible { outline: 2px solid $amber-gold; outline-offset: 4px; }
+    }
+
     .footer-bottom {
       padding-top: $spacing-md;
       border-top: 1px solid rgba(245, 230, 211, 0.2);

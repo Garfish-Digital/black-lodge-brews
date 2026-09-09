@@ -1,173 +1,151 @@
 @import 'variables';
 
 .hero {
-    min-height: 100vh;
+    min-height: 760px;
+    min-height: 100svh;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    background:
-        radial-gradient(ellipse at 15% 72%, rgba(27, 58, 27, 0.5) 0%, transparent 55%),
-        radial-gradient(ellipse at 82% 18%, rgba(42, 18, 8, 0.75) 0%, transparent 50%),
-        $charred-oak;
-    position: relative;
-    overflow: hidden;
-    padding-top: 0;
+    padding: clamp(5rem, 10vh, 9rem) 52% clamp(5rem, 10vh, 9rem) 7vw;
+    background: $charred-oak;
 
-    // Beer level container for section filling effect
-    .beer-level-container {
+    .hero-image {
         position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        inset: 0;
+        width: 100%;
         height: 100%;
-        pointer-events: none;
-        z-index: 2;
-
-        .beer-level {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 0%;
-            transition: height 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            z-index: 2;
-
-            .beer-liquid {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 100%;
-                background: linear-gradient(to top,
-                        rgba(200, 146, 10, 0.5) 0%,
-                        rgba(232, 184, 75, 0.35) 100%);
-                backdrop-filter: blur(1px);
-            }
-
-            .beer-foam {
-                position: absolute;
-                top: -37.5px;
-                left: 0;
-                right: 0;
-                height: 37.5px;
-                background: linear-gradient(to bottom,
-                        rgba(255, 255, 255, 0.6) 0%,
-                        rgba(255, 255, 255, 0.25) 50%,
-                        transparent 100%);
-                border-radius: 50px 50px 0 0;
-                opacity: 0;
-                transform: translateY(50px);
-                transition: opacity 1.5s ease 3s, transform 2.5s ease 2.5s;
-            }
-        }
+        object-fit: cover;
+        object-position: left center;
+        transform: scaleX(-1);
+        z-index: -2;
     }
 
-    // Animation states
-    &.filling .beer-level {
-        height: 18.75% !important;
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: linear-gradient(270deg, rgba(15, 11, 9, 0.05) 20%, rgba(15, 11, 9, 0.68) 65%, rgba(15, 11, 9, 0.88)),
+            linear-gradient(0deg, rgba(15, 11, 9, 0.65), transparent 25%);
     }
 
-    &.filling .beer-foam,
-    &.filled .beer-foam {
-        opacity: 1 !important;
-        transform: translateY(0) !important;
+    .hero-content { width: 100%; }
+
+    .hero-eyebrow {
+        color: $foam-cream;
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        line-height: 1.7;
+        margin-bottom: 2rem;
     }
 
-    .hero-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: $spacing-xxl;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0;
-        padding: 0 $spacing-lg;
-        align-self: flex-start;
-        margin-top: 15vh;
+    .hero-title {
+        color: $foam-cream;
+        font-family: $font-display;
+        font-weight: 400;
+        font-size: clamp(3rem, 5.2vw, 6.5rem);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        margin-bottom: 1.75rem;
     }
 
-    .hero-text {
-        justify-self: start;
-
-        .hero-title {
-            //   font-family: 'Oswald', sans-serif;
-            font-family: $font-display;
-            font-weight: 700;
-            font-size: clamp(3.5rem, 6vw, 5rem);
-            margin-bottom: calc($spacing-md * 0.75);
-            background: linear-gradient(25deg, #C8920A, #E8B84B);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 2px;
-            line-height: .95;
-            padding-bottom: 0.1em;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(0.9rem, 1.5vw, 1.125rem);
-            margin-bottom: calc($spacing-xl * 0.75);
-            color: rgba(245, 230, 211, 0.9);
-            font-style: italic;
-        }
-
-        .hero-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: calc($spacing-md * 0.75);
-
-            .btn {
-                padding: calc($spacing-sm * 0.75) calc($spacing-md * 0.75);
-                font-size: 0.9rem;
-                width: fit-content;
-            }
-        }
+    .hero-subtitle {
+        color: $foam-cream;
+        font-size: clamp(1rem, 1.3vw, 1.2rem);
+        line-height: 1.7;
+        margin-bottom: 2.75rem;
     }
 
-    .hero-animation {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+
 }
 
-@keyframes foamSettle {
-    0%   { border-radius: 62% 38% 55% 45% / 30px 30px 0 0; }
-    25%  { border-radius: 45% 55% 62% 38% / 28px 32px 0 0; }
-    50%  { border-radius: 55% 45% 38% 62% / 32px 28px 0 0; }
-    75%  { border-radius: 38% 62% 45% 55% / 29px 31px 0 0; }
-    100% { border-radius: 62% 38% 55% 45% / 30px 30px 0 0; }
+@media (max-width: 768px) {
+    .hero {
+        min-height: 860px;
+        min-height: max(780px, 100svh);
+        align-items: flex-end;
+        padding: 4rem 25% 4rem 1.5rem;
+
+        .hero-image { object-position: 25% center; }
+        &::before {
+            background: linear-gradient(0deg, rgba(15, 11, 9, 0.96), rgba(15, 11, 9, 0.8) 32%, rgba(15, 11, 9, 0.05) 70%);
+        }
+        .hero-title { font-size: clamp(2.75rem, 9vw, 4.5rem); }
+        .hero-eyebrow { margin-bottom: 1rem; }
+        .hero-subtitle { margin-bottom: 1.5rem; }
+    }
 }
 
 .taps-section {
     background:
-        radial-gradient(ellipse at 88% 8%, rgba(200, 146, 10, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 12% 92%, rgba(42, 18, 8, 0.55) 0%, transparent 45%),
+        radial-gradient(ellipse at 88% 8%, rgba(200, 146, 10, 0.06) 0%, transparent 50%),
         $roasted-malt;
-    padding: 14rem 0;
+    padding: clamp(4rem, 8vw, 8rem) 0;
 
-    .section-title {
-        text-align: center;
-        margin-bottom: $spacing-lg;
+    .container {
+        max-width: 1120px;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 4rem);
     }
 
-    .section-subtitle {
-        text-align: center;
-        color: rgba(245, 230, 211, 0.8);
-        margin-bottom: $spacing-xxl;
-        font-style: italic;
+    .tap-menu-heading {
+        margin-bottom: clamp(2.5rem, 5vw, 4rem);
+
+        h2 {
+            color: $foam-cream;
+            font-size: clamp(2.75rem, 5vw, 4.75rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin: 0 0 1rem;
+        }
+
+        p {
+            color: rgba($foam-cream, 0.8);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin: 0;
+        }
     }
 
-    .beers-grid {
+    .tap-menu {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: $spacing-xl;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: clamp(2.5rem, 6vw, 5rem);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .tap-menu-coming {
+        margin-top: clamp(2rem, 4vw, 3rem);
+
+        > h2 {
+            color: $amber-gold;
+            font-family: $font-body;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin: 0 0 1.25rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .tap-menu { grid-template-columns: minmax(0, 1fr); }
     }
 }
 
 .story-section {
     position: relative;
     overflow: hidden;
-    padding: $spacing-xxl 0;
+    padding: clamp(7.5rem, 10vw, 10rem) 0;
+
+    @media (max-width: $breakpoint-md) {
+        padding-block: clamp(4rem, 10vw, 5rem);
+    }
 
     .story-content {
         display: grid;
@@ -178,8 +156,12 @@
 
     .story-text {
         h2 {
-            margin-bottom: $spacing-lg;
-            color: $amber-gold;
+            color: $foam-cream;
+            font-size: clamp(2.75rem, 5vw, 4.75rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin: 0 0 1rem;
         }
 
         p {
@@ -223,72 +205,148 @@
 }
 
 .taproom-section {
-    background:
-        radial-gradient(ellipse at 6% 94%, rgba(27, 58, 27, 0.4) 0%, transparent 52%),
-        radial-gradient(ellipse at 94% 6%, rgba(42, 18, 8, 0.45) 0%, transparent 48%),
-        #12080A;
-    padding: 14rem 0;
+    background: $charred-oak;
+    padding: clamp(15rem, 20vw, 20rem) 0 clamp(4rem, 8vw, 8rem);
 
-    .section-title {
-        text-align: center;
-        margin-bottom: $spacing-lg;
+    @media (max-width: $breakpoint-md) {
+        padding-top: clamp(4rem, 10vw, 5rem);
     }
 
-    .section-subtitle {
-        text-align: center;
-        color: rgba(245, 230, 211, 0.8);
-        margin-bottom: $spacing-xxl;
-        font-style: italic;
+    .container {
+        max-width: 1120px;
+        margin-inline: auto;
+        padding-inline: clamp(1.25rem, 5vw, 4rem);
+        padding-top: clamp(3rem, 6vw, 5rem);
     }
 
-    .taproom-content {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 5rem;
-    }
+    .taproom-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
 
-    .taproom-description {
-        h3 {
-            color: $amber-gold;
-            margin-bottom: $spacing-xl;
-            letter-spacing: 0.04em;
+        h2 {
+            color: $foam-cream;
+            font-weight: 400;
+            font-size: clamp(2.75rem, 5vw, 4.75rem);
+            letter-spacing: -0.03em;
+            margin: 0;
         }
+
+        p { color: $amber-gold; margin: 0; font-size: 1rem; }
     }
 
-    .taproom-features {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: $spacing-xxl;
+    .taproom-image {
+        display: block;
+        width: 80%;
+        margin-inline: auto;
+        height: 70vh;
+        height: 70svh;
+        object-fit: cover;
+        object-position: center 60%;
+    }
 
-        .feature {
+    .taproom-introduction {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: clamp(2rem, 5vw, 5rem);
+        padding-block: clamp(2.5rem, 5vw, 4rem);
+
+        h3 {
+            color: $foam-cream;
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 400;
+            margin: 0;
+        }
+
+        p {
+            color: rgba(245, 230, 211, 0.85);
+            font-size: 1.0625rem;
+            line-height: 1.85;
+            max-width: 48ch;
             margin: 0;
         }
     }
 
-    .events-calendar {
-        h3 {
+    .taproom-programme {
+        border-top: 1px solid rgba(245, 230, 211, 0.25);
+        padding-top: 2.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: clamp(2rem, 5vw, 5rem);
+
+        > h3 {
             color: $amber-gold;
-            margin: $spacing-xl 0;
-            letter-spacing: 0.04em;
+            font-family: $font-body;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0;
+            padding-top: 0.35rem;
         }
+    }
 
-        .events-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: $spacing-xxl;
+    .taproom-events { list-style: none; padding: 0; margin: 0; min-width: 0; }
 
-            .event-item {
-                margin: 0;
-            }
+    .taproom-event {
+        display: grid;
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+        gap: 1.5rem;
+        padding-block: 1.75rem;
+        border-bottom: 1px solid rgba(245, 230, 211, 0.16);
+        &:first-child { padding-top: 0; }
+    }
+
+    .taproom-date {
+        color: $amber-gold;
+        font-size: 0.875rem;
+        line-height: 1.8;
+        padding-top: 0.2rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .taproom-event-copy {
+        h4 {
+            color: $foam-cream;
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 400;
+            line-height: 1.35;
+            margin: 0 0 0.6rem;
         }
+        p {
+            color: rgba(245, 230, 211, 0.8);
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container { padding-inline: 1.25rem; }
+        .taproom-heading { display: block; margin-bottom: 1.75rem; }
+        .taproom-heading h2 { font-size: clamp(2rem, 7vw, 3rem); }
+        .taproom-heading p { margin-top: 0.75rem; }
+        .taproom-image { width: 100%; height: 60vh; height: 60svh; object-position: 45% center; }
+        .taproom-introduction, .taproom-programme { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+        .taproom-event { grid-template-columns: minmax(0, 1fr); gap: 0.35rem; }
     }
 }
 
 .contact-section {
     position: relative;
     overflow: hidden;
+    padding: clamp(7.5rem, 10vw, 10rem) 0;
+
+    @media (max-width: $breakpoint-md) {
+        padding-block: clamp(4rem, 10vw, 5rem);
+    }
 
     .section-title {
+        color: $foam-cream;
+        font-size: clamp(2.75rem, 5vw, 4.75rem);
+        font-weight: 400;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
         text-align: center;
         margin-bottom: $spacing-xxl;
     }
@@ -348,28 +406,11 @@
 }
 
 @media (max-width: $breakpoint-lg) {
-    .hero .hero-content {
-        grid-template-columns: 1fr;
-        gap: $spacing-xl;
-
-        .hero-text {
-            text-align: left;
-        }
-    }
-
-    .hero-animation {
-        transform: translateX(-20vw);
-    }
-
     .story-content {
         grid-template-columns: 1fr !important;
         gap: $spacing-xl;
     }
 
-    .taproom-features,
-    .events-list {
-        grid-template-columns: 1fr !important;
-    }
 
     .contact-content {
         grid-template-columns: 1fr !important;
@@ -405,207 +446,4 @@
     background-size: 150%;
     background-position: calc(50% - 20vw) center;
     background-repeat: no-repeat;
-}
-
-// Unified taproom card style
-.feature,
-.event-item {
-    background: rgba(245, 230, 211, 0.03);
-    border: 1px solid rgba(245, 230, 211, 0.08);
-    border-radius: $border-radius-md;
-    position: relative;
-    overflow: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(200, 146, 10, 0.7), transparent);
-        transform: scaleX(0);
-        transform-origin: left center;
-        transition: transform 0.9s ease;
-        z-index: 1;
-    }
-
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse at 50% 50%, rgba(200, 146, 10, 0.12) 0%, transparent 72%);
-        opacity: 0;
-        transition: opacity 0.8s ease;
-        pointer-events: none;
-        z-index: 0;
-    }
-
-    &:hover {
-        &::before {
-            transform: scaleX(1);
-        }
-
-        &::after {
-            opacity: 1;
-        }
-    }
-}
-
-.feature {
-    padding: $spacing-xxl;
-
-    h4 {
-        color: $amber-gold;
-        margin-bottom: $spacing-sm;
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
-        position: relative;
-        z-index: 1;
-    }
-
-    p {
-        color: rgba(245, 230, 211, 0.7);
-        font-size: 0.9rem;
-        margin: 0;
-        line-height: 1.75;
-        position: relative;
-        z-index: 1;
-    }
-}
-
-.event-item {
-    padding: $spacing-xxl;
-    display: flex;
-    gap: $spacing-lg;
-    align-items: center;
-
-    .event-date {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-width: 48px;
-        padding-right: $spacing-md;
-        border-right: 1px solid rgba(245, 230, 211, 0.12);
-        flex-shrink: 0;
-        position: relative;
-        z-index: 1;
-
-        .event-day {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: $amber-gold;
-            line-height: 1;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .event-month {
-            font-size: 0.6rem;
-            font-weight: 500;
-            color: rgba(245, 230, 211, 0.4);
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-    }
-
-    .event-details {
-        flex: 1;
-        position: relative;
-        z-index: 1;
-
-        h4 {
-            color: $foam-cream;
-            margin-bottom: $spacing-xs;
-            font-size: 1rem;
-        }
-
-        p {
-            color: rgba(245, 230, 211, 0.65);
-            font-size: 0.9rem;
-            margin: 0;
-            line-height: 1.6;
-        }
-    }
-}
-
-@media (max-width: $breakpoint-md) {
-    .beers-grid {
-        grid-template-columns: 1fr !important;
-    }
-
-    .hero-buttons {
-        justify-content: flex-start;
-    }
-}
-
-// Surface Duo specific (540x720) - more targeted
-@media (max-width: 540px) and (min-aspect-ratio: 3/4) {
-    .hero {
-        padding-top: 0;
-
-        .hero-content {
-            padding: 0 2rem;
-            // padding: 0 calc($spacing-lg - 45px);
-        }
-
-        .hero-text {
-            .hero-title {
-                font-size: calc(clamp(2.25rem, 4.5vw, 5rem) * 1.5);
-            }
-
-            .hero-subtitle {
-                font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.5);
-            }
-        }
-    }
-}
-
-// Above Surface Duo - iPad and larger
-@media (min-width: 541px) {
-    .hero .hero-text .hero-title {
-        font-size: clamp(5rem, 8vw, 9rem);
-    }
-}
-
-// Surface Duo landscape (720x540)
-@media (max-height: 540px) and (min-width: 720px) {
-    .hero {
-        .hero-content {
-            padding: 0 2rem;
-            // padding: 0 calc($spacing-lg - 80px);
-        }
-
-        .hero-text {
-            .hero-title {
-                font-size: calc(clamp(2.25rem, 4.5vw, 3.75rem) * 1.5);
-            }
-
-            .hero-subtitle {
-                font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.5);
-            }
-        }
-    }
-}
-
-// Desktop (1440px and above)
-@media (min-width: 1440px) {
-    .hero {
-        .hero-content {
-            padding: 0 calc($spacing-lg - 80px);
-            margin-left: 3rem;
-        }
-
-        .hero-text {
-            .hero-title {
-                font-size: calc(clamp(2.25rem, 5vw, 8rem) * 1.33);
-            }
-
-            .hero-subtitle {
-                font-size: calc(clamp(0.9rem, 1.5vw, 1.125rem) * 1.33);
-            }
-        }
-    }
 }

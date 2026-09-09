@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BeerCard from "../components/BeerCard.astro";
-import MistParticlesBeer from "../components/MistParticlesBeer.astro";
+import BeerMenuEntry from "../components/BeerMenuEntry.astro";
 import MistParticlesFireflies from "../components/MistParticlesFireflies.astro";
 
 const beers = [
@@ -11,7 +10,7 @@ const beers = [
     abv: 6.8,
     ibu: 65,
     description:
-      "A secret blend of citrus and pine with a dark, smoky finish that lingers like whispers in the night.",
+      "Citrus and pine, with a lingering smoky finish.",
     color: "#D2691E",
     available: true,
   },
@@ -21,7 +20,7 @@ const beers = [
     abv: 5.4,
     ibu: 35,
     description:
-      "Velvet chocolate and roasted coffee — a measured brew for those who contemplate life's quieter mysteries.",
+      "Velvety chocolate and roasted coffee.",
     color: "#2F1B14",
     available: true,
   },
@@ -31,7 +30,7 @@ const beers = [
     abv: 4.8,
     ibu: 22,
     description:
-      "Crisp and clean, with a subtle malt sweetness and the earthy hush of forest floor after evening rain.",
+      "Crisp and clean, with subtle malt sweetness and earthy notes.",
     color: "#B87333",
     available: true,
   },
@@ -41,7 +40,7 @@ const beers = [
     abv: 5.9,
     ibu: 40,
     description:
-      "A bold red ale with a caramel backbone and curious floral accents that drift long across the palate.",
+      "A caramel backbone with lingering floral notes.",
     color: "#A0522D",
     available: false,
   },
@@ -51,7 +50,7 @@ const beers = [
     abv: 4.2,
     ibu: 15,
     description:
-      "Light and cloudy, laced with banana and clove — as enigmatic as the morning mist on the mountains.",
+      "Light and cloudy, with banana and clove.",
     color: "#F4A460",
     available: true,
   },
@@ -61,11 +60,14 @@ const beers = [
     abv: 8.2,
     ibu: 55,
     description:
-      "Deep, dark, and brooding — vanilla and oak shadowed by the weight of ancient, unspoken secrets.",
+      "Deep roasted character, with vanilla and oak.",
     color: "#1C1C1C",
     available: true,
   },
 ];
+
+const onTap = beers.filter((beer) => beer.available);
+const comingSoon = beers.filter((beer) => !beer.available);
 
 const events = [
   {
@@ -97,43 +99,37 @@ const events = [
   description="Enter the mysterious world of Black Lodge Brews, where every sip tells a story and every brew holds secrets waiting to be discovered."
 >
 
-  <!-- Hero Section -->
-  <section class="hero section filling-section" id="lodge">
+  <!-- Full-width photographic hero -->
+  <section class="hero section" id="lodge" aria-labelledby="hero-title">
+    <img class="hero-image" src="/images/beer-1.avif" width="1200" height="855"
+      alt="Two glasses of amber beer on a dark wooden table" fetchpriority="high" />
     <div class="hero-content">
-      <div class="hero-text">
-        <!-- <h1 class="hero-title">Black&nbsp;Lodge&nbsp;Brews</h1> -->
-        <!-- <h1 class="hero-title">Black Lodge Brews</h1> -->
-        <!-- <p class="hero-subtitle">Histories poured into every glass</p> -->
-        <h1 class="hero-title">Black<br /> Lodge<br /> Brews</h1>
-        <p class="hero-subtitle">Histories poured<br>into every glass</p> 
-      </div>
+      <p class="hero-eyebrow">Brewery & Taproom · Est. 2023</p>
+      <h1 class="hero-title" id="hero-title">Black Lodge<br />Brews</h1>
+      <p class="hero-subtitle">Histories poured into every glass.</p>
     </div>
-    <div class="beer-level-container">
-      <div class="beer-level">
-        <div class="beer-liquid"></div>
-        <div class="beer-foam"></div>
-      </div>
-    </div>
-    <MistParticlesBeer
-      particleCount={40}
-      color="#FFFFFF"
-      size={3}
-      speed={1.5}
-      opacity={0.5}
-    />
   </section>
 
   <!-- Tap List Section -->
-  <section id="taps" class="section taps-section">
+  <section id="taps" class="section taps-section" aria-labelledby="taps-title">
     <div class="container">
-      <h2 class="section-title">Our Woodsy Taps</h2>
-      <p class="section-subtitle">
-        Each brew tells a story, each sip reveals a secret
-      </p>
+      <header class="tap-menu-heading">
+        <h2 id="taps-title">On Tap</h2>
+        <p>The current selection at the Lodge.</p>
+      </header>
 
-      <div class="beers-grid">
-        {beers.map((beer) => <BeerCard {...beer} />)}
-      </div>
+      <ul class="tap-menu" aria-label="Beers on tap" role="list">
+        {onTap.map((beer) => <BeerMenuEntry {...beer} />)}
+      </ul>
+
+      {comingSoon.length > 0 && (
+        <div class="tap-menu-coming">
+          <h2 id="coming-soon-title">Coming soon</h2>
+          <ul class="tap-menu" aria-labelledby="coming-soon-title" role="list">
+            {comingSoon.map((beer) => <BeerMenuEntry {...beer} />)}
+          </ul>
+        </div>
+      )}
     </div>
   </section>
 
@@ -145,27 +141,11 @@ const events = [
         <div class="story-text">
           <h2>The Legend of Black Lodge</h2>
           <p>
-            Deep in the heart of the Pacific Northwest, where ancient forests
-            whisper secrets and mist dances through towering pines, lies the
-            enigmatic Black Lodge Brewery. Founded in 2023 by a group of
-            passionate brewers who believe that the best ales are born from
-            mystery and crafted with intention.
+            Founded in 2023 deep in the Pacific Northwest, Black Lodge brews small-batch ales inspired by the dark, ancient forests around us. We partner with local family farms for our ingredients, blending rigorous craft with a touch of the unexpected.
           </p>
 
           <p>
-            Our brewing process is as much art as it is science. We source our
-            ingredients from local farms that have been tended by generations of
-            families who understand the land's perplexities. Each batch is carefully
-            crafted in small quantities, ensuring that every glass carries the
-            essence of our mystic heritage.
-          </p>
-
-          <p>
-            The lodge itself stands as a testament to craftsmanship.
-            Built from reclaimed timber and stone, it houses our
-            state-of-the-art brewing equipment alongside relics and curiosities
-            collected from around the world. Every corner tells a story, every
-            shadow holds a secret.
+            Our taproom reflects that same craft. Built from reclaimed timber and local stone, the space houses our brewhouse alongside oddities and curiosities picked up along the way. It’s a warm spot to grab a mug, sit by the shadow of the pines, and stay awhile.
           </p>
         </div>
       </div>
@@ -180,67 +160,36 @@ const events = [
   </section>
 
   <!-- Taproom Section -->
-  <section id="taproom" class="section taproom-section">
+  <section id="taproom" class="section taproom-section" aria-labelledby="taproom-title">
+    <img class="taproom-image" src="/images/taproom.jpg" width="1200" height="983"
+      alt="A timber-lined taproom with a long bar, warm pendant lights, and communal tables"
+      loading="lazy" decoding="async" />
+
     <div class="container">
-      <h2 class="section-title">The Taproom Experience</h2>
-      <p class="section-subtitle">
-        Step into a world where every detail matters
-      </p>
+      <header class="taproom-heading">
+        <h2 id="taproom-title">The Taproom</h2>
+        <!-- <p>Pull up a chair.</p> -->
+      </header>
 
-      <div class="taproom-content">
-        <div class="taproom-description">
-          <h3>Immerse Yourself</h3>
-          <div class="taproom-features">
-              <div class="feature">
-                <h4>Fresh Pours</h4>
-                <p>
-                  All our beers are served at the perfect temperature from our
-                  custom tap system
-                </p>
-              </div>
-              <div class="feature">
-                <h4>Live Music</h4>
-                <p>
-                  Regular performances featuring local jazz groups, folk singers,
-                  and ambient artists
-                </p>
-              </div>
-              <div class="feature">
-                <h4>Artisan Bites</h4>
-                <p>
-                  Carefully selected food pairings, sweet and savory, that
-                  complement our unique brews
-                </p>
-              </div>
-              <div class="feature">
-                <h4>Private Reserve</h4>
-                <p>
-                  Exclusive small-batch releases available only to lodge members
-                  and in-house guests
-                </p>
-              </div>
-            </div>
-        </div>
+      <div class="taproom-introduction">
+        <h3>Stay a while.</h3>
+        <p>A fresh pour at the bar. A table shared with friends. Settle in for
+          an evening of beer, conversation, and music at the Lodge.</p>
+      </div>
 
-        <div class="events-calendar">
-          <h3>Upcoming Events</h3>
-          <div class="events-list">
-              {
-                events.map((event, idx) => (
-                  <div class="event-item">
-                    <div class="event-date">
-                      <span class="event-day">{event.date.split(' ')[1]}</span>
-                      <span class="event-month">{event.date.split(' ')[0].slice(0, 3)}</span>
-                    </div>
-                    <div class="event-details">
-                      <h4>{event.title}</h4>
-                      <p>{event.description}</p>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-        </div>
+      <div class="taproom-programme">
+        <h3>Upcoming Events</h3>
+        <ul class="taproom-events">
+          {events.map((event) => (
+            <li class="taproom-event">
+              <span class="taproom-date">{event.date}</span>
+              <div class="taproom-event-copy">
+                <h4>{event.title}</h4>
+                <p>{event.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
@@ -266,7 +215,7 @@ const events = [
                   clip-rule="evenodd"></path></svg
               > Location
             </h3>
-            <p>123 Brewery Lane<br />Portland, OR 97210</p>
+            <p>312 Loggers Lane<br />Portland, OR 97210</p>
           </div>
 
           <div class="contact-item">
@@ -284,7 +233,7 @@ const events = [
                   clip-rule="evenodd"></path></svg
               > Phone
             </h3>
-            <p>(503) 555-BREW</p>
+            <p>(503) 755-BREW</p>
           </div>
 
           <div class="contact-item">
@@ -327,11 +276,7 @@ const events = [
   @import "../styles/global.scss";
   @import "../styles/home-page";
   
-  // Custom particle canvas sizing - extend both up and down for maximum coverage
-  .hero .mist-container-beer {
-    height: 150%;
-    top: -25%;
-  }
+
 </style>
 
 <script>
@@ -346,39 +291,6 @@ const events = [
   document.addEventListener("astro:page-load", () => {
     new GSAPParallaxController();
   });
-
-  // Beer level filling animation
-  class SectionFillAnimation {
-    private fillingSection: HTMLElement | null;
-    private isAnimating: boolean;
-
-    constructor() {
-      this.fillingSection = document.querySelector(".filling-section");
-      this.isAnimating = false;
-
-      if (this.fillingSection) {
-        // Start filling animation after 2 seconds
-        setTimeout(() => {
-          this.startFilling();
-        }, 2000);
-      }
-    }
-
-    startFilling() {
-      if (this.isAnimating) return;
-
-      this.isAnimating = true;
-      this.fillingSection!.classList.add("filling");
-
-      // Add filled class after animation completes
-      setTimeout(() => {
-        this.fillingSection!.classList.add("filled");
-      }, 4000);
-    }
-  }
-
-  // Initialize section fill animation
-  new SectionFillAnimation();
 
   // Professional parallax implementation
   class GSAPParallaxController {
